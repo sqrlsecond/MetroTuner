@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">MetroTuner</string>
+    <string name="placeholder">Just text</string>
+    <string name="metronome_start">0</string>
+    <string name="metronome_start_pause_btn">Start/Pause</string>
+    <string-array name="tabs_names">
+        <item>Metronome</item>
+        <item>Tuner</item>
+    </string-array>
+    <string name="beats_divider">/</string>
+    <string name="settings_confirm_btn">Confirm!</string>
+    <string name="bpm_hint">BPM</string>
+    <string name="beats_hint">beats</string>
+    <string name="divider_hint">divider</string>
+    <string name="bpm_text">bpm: %1$d</string>
+    <string name="beats_text">beats: %1$d / %2$d</string>
+</resources>

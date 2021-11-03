@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragmentVP">
+    <fragment
+        android:id="@+id/fragmentVP"
+        android:name="com.example.metrotuner.FragmentVP"
+        android:label="FragmentVP" >
+        <action
+            android:id="@+id/action_fragmentVP_to_metronomeSettingsFragment"
+            app:destination="@id/metronomeSettingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/metronomeSettingsFragment"
+        android:name="com.example.metrotuner.MetronomeSettingsFragment"
+        android:label="MetronomeSettingsFragment" />
+</navigation>
