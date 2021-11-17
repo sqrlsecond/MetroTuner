@@ -19,12 +19,13 @@
     <EditText
         android:id="@+id/bpm_edit"
         android:layout_width="64dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="32dp"
         android:ems="10"
-        android:inputType="number"
         android:hint="@string/bpm_hint"
         android:importantForAutofill="no"
+        android:inputType="number"
+        android:textColorHint="#757575"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,23 +33,26 @@
     <EditText
         android:id="@+id/divider_edit"
         android:layout_width="64dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="32dp"
         android:ems="10"
-        android:inputType="number"
         android:hint="@string/divider_hint"
         android:importantForAutofill="no"
+        android:inputType="number"
+        android:textColor="#757575"
+        android:textColorHint="#757575"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/bpm_edit" />
 
     <EditText
         android:id="@+id/beats_count_edit"
         android:layout_width="64dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:ems="10"
-        android:inputType="number"
         android:hint="@string/beats_hint"
         android:importantForAutofill="no"
+        android:inputType="number"
+        android:textColorHint="#757575"
         app:layout_constraintBottom_toBottomOf="@+id/divider_edit"
         app:layout_constraintEnd_toStartOf="@+id/textView3" />
 
@@ -60,5 +64,26 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/presets_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_confirm_btn"
+        app:layout_constraintVertical_bias="0.07999998" />
+
+    <Button
+        android:id="@+id/save_preset_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_preset"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/presets_list" />
 </androidx.constraintlayout.widget.ConstraintLayout>

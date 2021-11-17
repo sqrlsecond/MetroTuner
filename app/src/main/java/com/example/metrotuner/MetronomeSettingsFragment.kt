@@ -8,11 +8,20 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class MetronomeSettingsFragment: Fragment() {
 
     private val stateVm: MetronomeStateViewModel by activityViewModels()
+    private val profilesVm: MetronomeSettingsVM by viewModels {
+        MetronomeSettingsVMFactory((requireActivity().application as MetroTunerApp).repository!!)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +51,15 @@ class MetronomeSettingsFragment: Fragment() {
             stateVm.divider = dividerEdit.text.toString().toInt()
 
             findNavController().popBackStack()
-
         }
+
+        val recView = view.findViewById<RecyclerView>(R.id.presets_list)
+        val adapterPresets = PresetsListAdapter()
+        GlobalScope.launch(Dispatchers.Main) {
+            profilesVm.profilesList.collect {
+                adapterPresets.submitList(it)
+            }
+        }
+        recView.adapter = adapterPresets
     }
 }
