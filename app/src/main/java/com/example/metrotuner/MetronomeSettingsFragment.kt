@@ -44,6 +44,7 @@ class MetronomeSettingsFragment: Fragment() {
         beatsEdit.setText(stateVm.beats.toString())
         dividerEdit.setText(stateVm.divider.toString())
 
+        //Подтверждение новых настроек
         view.findViewById<Button>(R.id.settings_confirm_btn).setOnClickListener {
 
             stateVm.bpm = bpmEdit.text.toString().toInt()
@@ -53,6 +54,7 @@ class MetronomeSettingsFragment: Fragment() {
             findNavController().popBackStack()
         }
 
+        // Список сохранённых профилей
         val recView = view.findViewById<RecyclerView>(R.id.presets_list)
         val adapterPresets = PresetsListAdapter()
         GlobalScope.launch(Dispatchers.Main) {
@@ -61,5 +63,9 @@ class MetronomeSettingsFragment: Fragment() {
             }
         }
         recView.adapter = adapterPresets
+
+        view.findViewById<Button>(R.id.save_preset_btn).setOnClickListener {
+            EnterPresetNameDialog().show(parentFragmentManager, "save Dialog")
+        }
     }
 }
