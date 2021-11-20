@@ -1,7 +1,11 @@
 package com.example.metrotuner
 
 import android.content.Context
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 class MetronomeSettingsRepository(context: Context) {
     private val dataBaseDao = MetronomeDatabase.getDatabase(context).metronomeSettingsDao()
@@ -11,6 +15,8 @@ class MetronomeSettingsRepository(context: Context) {
     }
 
     fun saveSettings(settingsEntity: MetronomeSettingsEntity){
-        dataBaseDao.insert(settingsEntity)
+        GlobalScope.launch(Dispatchers.IO) {
+            dataBaseDao.insert(settingsEntity)
+        }
     }
 }

@@ -9,14 +9,19 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 
-class PresetsListAdapter(): ListAdapter<MetronomeSettingsEntity, PresetsListAdapter.ViewHolder>(DiffCallback) {
+class PresetsListAdapter(private val clickListener: (MetronomeSettingsEntity) -> Unit): ListAdapter<MetronomeSettingsEntity, PresetsListAdapter.ViewHolder>(DiffCallback) {
 
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class ViewHolder(itemView: View, clickAtPosition: (Int)-> Unit) : RecyclerView.ViewHolder(itemView){
 
         private val nameText:TextView = itemView.findViewById(R.id.metronome_preset_name_text)
         private val beatsText:TextView = itemView.findViewById(R.id.metronome_preset_beats_text)
 
+        init {
+            nameText.setOnClickListener {
+                clickAtPosition(adapterPosition)
+            }
+        }
         fun bind(settingsEntity: MetronomeSettingsEntity){
             nameText.text = settingsEntity.name
             beatsText.text = itemView.context.getString(R.string.metronome_preset,
@@ -31,7 +36,10 @@ class PresetsListAdapter(): ListAdapter<MetronomeSettingsEntity, PresetsListAdap
         return ViewHolder(LayoutInflater.from(parent.context)
                 .inflate(   R.layout.metronome_preset_item,
                             parent,
-                            false))
+                            false)
+        ) {
+            clickListener(currentList[it])
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

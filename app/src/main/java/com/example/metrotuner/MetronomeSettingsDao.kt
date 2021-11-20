@@ -12,5 +12,5 @@ interface MetronomeSettingsDao {
     fun getAll(): Flow<List<MetronomeSettingsEntity>>
 
     @Insert
-    fun insert(settingsEntity: MetronomeSettingsEntity)
+    suspend fun insert(settingsEntity: MetronomeSettingsEntity)
 }

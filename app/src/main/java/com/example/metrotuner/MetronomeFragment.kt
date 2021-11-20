@@ -43,7 +43,7 @@ class MetronomeFragment(): Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mediaPlayer = MediaPlayer.create(context, R.raw.tick)
+        mediaPlayer = MediaPlayer.create(context, R.raw.click)
 
         // Отображение текущих параметров
         view.findViewById<TextView>(R.id.bpm_text).text = getString(R.string.bpm_text, stateVm.bpm)
@@ -74,9 +74,9 @@ class MetronomeFragment(): Fragment() {
                 // Обнуление счётчика долей
                 if(counter >= countMax) counter = 0
                 counter++
+                mediaPlayer?.start()
                 // Отображение текущей доли
                 GlobalScope.launch(Dispatchers.Main) {
-                    mediaPlayer?.start()
                     metronomeStateText?.text = counter.toString()
                 }
                 delay(pauseMs)

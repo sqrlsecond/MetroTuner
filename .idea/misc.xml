@@ -4,9 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/layout/dialog_profile_save.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/layout/fragment_metronome.xml" value="0.75" />
         <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/layout/fragment_metronome_settings.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/layout/fragment_tuner.xml" value="0.20520833333333333" />
-        <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/layout/metronome_preset_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/layout/metronome_preset_item.xml" value="0.9" />
       </map>
     </option>
   </component>
