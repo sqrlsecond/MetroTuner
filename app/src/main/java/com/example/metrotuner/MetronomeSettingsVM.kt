@@ -19,6 +19,12 @@ class MetronomeSettingsVM(private val repository: MetronomeSettingsRepository): 
             repository.saveSettings(entity)
         }
     }
+
+    fun deleteProfile(entity: MetronomeSettingsEntity){
+        viewModelScope.launch {
+            repository.deleteProfile(entity)
+        }
+    }
 }
 
 class MetronomeSettingsVMFactory(private val repository: MetronomeSettingsRepository) : ViewModelProvider.Factory

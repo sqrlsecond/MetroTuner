@@ -19,4 +19,10 @@ class MetronomeSettingsRepository(context: Context) {
             dataBaseDao.insert(settingsEntity)
         }
     }
+
+    fun deleteProfile(settingsEntity: MetronomeSettingsEntity){
+        GlobalScope.launch(Dispatchers.IO) {
+            dataBaseDao.delete(settingsEntity)
+        }
+    }
 }

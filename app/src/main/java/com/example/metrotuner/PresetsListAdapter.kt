@@ -3,23 +3,28 @@ package com.example.metrotuner
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 
-class PresetsListAdapter(private val clickListener: (MetronomeSettingsEntity) -> Unit): ListAdapter<MetronomeSettingsEntity, PresetsListAdapter.ViewHolder>(DiffCallback) {
+class PresetsListAdapter(private val clickListener: (MetronomeSettingsEntity, Actions) -> Unit):
+    ListAdapter<MetronomeSettingsEntity, PresetsListAdapter.ViewHolder>(DiffCallback) {
 
 
-    class ViewHolder(itemView: View, clickAtPosition: (Int)-> Unit) : RecyclerView.ViewHolder(itemView){
+    class ViewHolder(itemView: View, clickAtPosition: (Int, Actions)-> Unit) : RecyclerView.ViewHolder(itemView){
 
         private val nameText:TextView = itemView.findViewById(R.id.metronome_preset_name_text)
         private val beatsText:TextView = itemView.findViewById(R.id.metronome_preset_beats_text)
 
         init {
             nameText.setOnClickListener {
-                clickAtPosition(adapterPosition)
+                clickAtPosition(adapterPosition, Actions.CHOOSE)
+            }
+            itemView.findViewById<ImageView>(R.id.delete_item_icon).setOnClickListener {
+                clickAtPosition(adapterPosition, Actions.DELETE)
             }
         }
         fun bind(settingsEntity: MetronomeSettingsEntity){
@@ -37,8 +42,9 @@ class PresetsListAdapter(private val clickListener: (MetronomeSettingsEntity) ->
                 .inflate(   R.layout.metronome_preset_item,
                             parent,
                             false)
-        ) {
-            clickListener(currentList[it])
+        ) { position: Int,
+            action: Actions->
+            clickListener(currentList[position], action)
         }
     }
 
@@ -64,5 +70,10 @@ class PresetsListAdapter(private val clickListener: (MetronomeSettingsEntity) ->
 
        }
 
+    }
+
+    enum class Actions{
+        CHOOSE,
+        DELETE,
     }
 }

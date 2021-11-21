@@ -1,6 +1,7 @@
 package com.example.metrotuner
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
@@ -13,4 +14,7 @@ interface MetronomeSettingsDao {
 
     @Insert
     suspend fun insert(settingsEntity: MetronomeSettingsEntity)
+
+    @Delete
+    suspend fun delete(settingsEntity: MetronomeSettingsEntity)
 }

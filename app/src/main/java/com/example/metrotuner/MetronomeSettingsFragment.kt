@@ -62,7 +62,10 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
 
         // Список сохранённых профилей
         val recView = view.findViewById<RecyclerView>(R.id.presets_list)
-        val adapterPresets = PresetsListAdapter(){clickListener(it)}
+        val adapterPresets = PresetsListAdapter(){entity:MetronomeSettingsEntity,
+                                                  action:PresetsListAdapter.Actions ->
+                                                  clickListener(entity, action)
+        }
         GlobalScope.launch(Dispatchers.Main) {
             profilesVm.profilesList.collect {
                 adapterPresets.submitList(it)
@@ -98,12 +101,23 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
         profilesVm.addProfile(entity)
     }
 
-    private fun clickListener(entity: MetronomeSettingsEntity){
-        stateVm.bpm = entity.bpm
-        stateVm.beats = entity.beats
-        stateVm.divider = entity.divider
+    private fun clickListener(entity: MetronomeSettingsEntity, action: PresetsListAdapter.Actions){
 
-        findNavController().popBackStack()
+        when(action){
+            PresetsListAdapter.Actions.CHOOSE -> {
+                stateVm.bpm = entity.bpm
+                stateVm.beats = entity.beats
+                stateVm.divider = entity.divider
+
+                findNavController().popBackStack()
+            }
+            PresetsListAdapter.Actions.DELETE -> {
+                profilesVm.deleteProfile(entity)
+            }
+        }
+
+
+
     }
 
     override fun onDestroyView() {
