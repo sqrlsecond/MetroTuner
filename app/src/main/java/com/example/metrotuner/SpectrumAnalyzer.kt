@@ -72,7 +72,7 @@ object SpectrumAnalyzer {
         GlobalScope.launch(Dispatchers.Default){
             _audioRecord?.startRecording();
             while(actionEnable){
-                _audioRecord?.read(_audioBuffer!!, 0, bufSize!!)
+                _audioRecord?.read(_audioBuffer!!, 0, bufSize!!, AudioRecord.READ_BLOCKING)
                 fft()
                  frequency = findMaxAmplFreq(8000).toInt()
                 if(frequency > 0) _mainFrequency.value = frequency
