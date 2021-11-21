@@ -101,8 +101,10 @@ object SpectrumAnalyzer {
         // Количество элементов в буфере для хранения данных с микрофона
         // Буфер для работы алгоритма БПФ должен быть выражен 2 в целой степени
         // (128, 256, 512 и т.д.)
-        val requiredPow = (ceil(log2(minInternalBufferSize.toDouble()))).toInt() - 1
-        val internalBufferSize = 2.0.pow(requiredPow.toDouble()).toInt()
+        //val requiredPow = (ceil(log2(minInternalBufferSize.toDouble()))).toInt() - 1
+        //val internalBufferSize = 2.0.pow(requiredPow.toDouble()).toInt()
+        //размер в short
+        val internalBufferSize = if (4096 > minInternalBufferSize / 2) 4096 else (minInternalBufferSize / 2)
 
         _audioBuffer = ShortArray(internalBufferSize)
         _signalProcessingBuffer = Array<Complex>(internalBufferSize){Complex(0.0, 0.0)}
@@ -179,7 +181,7 @@ object SpectrumAnalyzer {
      * Значение частоты с максимальной амплитудой в спектре
      * @param samplingFrequency - частота семплирования исходного сигнала
      */
-    fun findMaxAmplFreq(samplingFrequency: Int): Double
+    private fun findMaxAmplFreq(samplingFrequency: Int): Double
     {
         var maxVal = 0.0
         var frequincyStep = samplingFrequency.toDouble() / _signalProcessingBuffer!!.size
@@ -191,7 +193,21 @@ object SpectrumAnalyzer {
                 maxFreqIndex = i
             }
         }
-        return frequincyStep * maxFreqIndex
+        var retval: Double = frequincyStep * maxFreqIndex
+        if (maxFreqIndex > 0) {
+            retval *= parabolicInterpolation(maxFreqIndex)
+        }
+        return retval
+    }
+
+    private fun parabolicInterpolation(index: Int): Double{
+        val alpha: Double = _signalProcessingBuffer!![index-1].module
+        val beta: Double = _signalProcessingBuffer!![index].module
+        val gamma: Double = _signalProcessingBuffer!![index + 1].module
+        val coefficient: Double = 0.5 * (alpha - gamma) / (alpha - 2 * beta + gamma)
+        return coefficient
     }
 }
+
+
 
