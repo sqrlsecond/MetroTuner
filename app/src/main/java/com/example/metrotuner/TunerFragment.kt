@@ -49,6 +49,7 @@ class TunerFragment(): Fragment() {
 
     override fun onResume() {
         super.onResume()
+
         GlobalScope.launch(Dispatchers.Main){
             fragLayout?.findViewById<TextView>(R.id.textView).apply {
                 SpectrumAnalyzer.actionOn()
@@ -58,5 +59,4 @@ class TunerFragment(): Fragment() {
             }
         }
     }
-
 }

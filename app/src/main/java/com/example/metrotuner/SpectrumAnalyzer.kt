@@ -58,6 +58,8 @@ object SpectrumAnalyzer {
      */
     private const val TAG = "Spectrum Analyzer Debug"
 
+    private var flag = false;
+
     /**
      * Активировать анализатор
      */
@@ -69,14 +71,15 @@ object SpectrumAnalyzer {
         }
         val bufSize = _audioBuffer?.size
         var frequency: Int = 0
+
         GlobalScope.launch(Dispatchers.Default){
             _audioRecord?.startRecording();
+            //flag = true
             while(actionEnable){
                 _audioRecord?.read(_audioBuffer!!, 0, bufSize!!, AudioRecord.READ_BLOCKING)
                 fft()
-                 frequency = findMaxAmplFreq(8000).toInt()
+                frequency = findMaxAmplFreq(8000).toInt()
                 if(frequency > 0) _mainFrequency.value = frequency
-
             }
         }
     }
@@ -187,15 +190,16 @@ object SpectrumAnalyzer {
         var frequincyStep = samplingFrequency.toDouble() / _signalProcessingBuffer!!.size
         var maxFreqIndex = 0
         // Проверка корректна только для части спектра не превышающией половины частоты дискретизации
-        for (i in 0.._signalProcessingBuffer!!.size / 2){
+
+        for (i in 0..(_signalProcessingBuffer!!.size / 2)){
             if (_signalProcessingBuffer!![i].module > maxVal){
                 maxVal = _signalProcessingBuffer!![i].module
                 maxFreqIndex = i
             }
         }
-        var retval: Double = frequincyStep * maxFreqIndex
+        var retval: Double = maxFreqIndex * frequincyStep
         if (maxFreqIndex > 0) {
-            retval *= parabolicInterpolation(maxFreqIndex)
+            retval = maxFreqIndex * (frequincyStep + parabolicInterpolation(maxFreqIndex))
         }
         return retval
     }
@@ -207,6 +211,7 @@ object SpectrumAnalyzer {
         val coefficient: Double = 0.5 * (alpha - gamma) / (alpha - 2 * beta + gamma)
         return coefficient
     }
+
 }
 
 
