@@ -39,7 +39,7 @@ class TunerFragment(): Fragment() {
 
     override fun onPause() {
         super.onPause()
-        SpectrumAnalyzer.actionStop()
+        AudioSignalProccesor.actionStop()
     }
 
     override fun onDestroyView() {
@@ -52,8 +52,8 @@ class TunerFragment(): Fragment() {
 
         GlobalScope.launch(Dispatchers.Main){
             fragLayout?.findViewById<TextView>(R.id.textView).apply {
-                SpectrumAnalyzer.actionOn()
-                SpectrumAnalyzer.mainFrequency.collect {
+                AudioSignalProccesor.actionOn()
+                AudioSignalProccesor.mainFrequency.collect {
                     this?.text = it.toString()
                 }
             }
