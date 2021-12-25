@@ -1,5 +1,6 @@
 package com.example.metrotuner
 
+import FrequencyNoteConverter
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -10,8 +11,8 @@ import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -49,13 +50,16 @@ class TunerFragment(): Fragment() {
 
     override fun onResume() {
         super.onResume()
-
-        GlobalScope.launch(Dispatchers.Main){
-            fragLayout?.findViewById<TextView>(R.id.textView).apply {
-                AudioSignalProccesor.actionOn()
-                AudioSignalProccesor.mainFrequency.collect {
-                    this?.text = it.toString()
-                }
+        val noteText = fragLayout?.findViewById<TextView>(R.id.noteTextView)
+        val centsText = fragLayout?.findViewById<TextView>(R.id.centsTextView)
+        val frequencyText = fragLayout?.findViewById<TextView>(R.id.frequencyTextView)
+        lifecycleScope.launch(Dispatchers.Main){
+            AudioSignalProccesor.actionOn()
+            AudioSignalProccesor.mainFrequency.collect {
+                val note = FrequencyNoteConverter.convert(it)
+                noteText?.text = note.nearestNote
+                centsText?.text = note.cents.toString()
+                frequencyText?.text = note.frequency.toString()
             }
         }
     }

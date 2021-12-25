@@ -3,8 +3,10 @@ package com.example.metrotuner
 import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -41,6 +43,8 @@ object AudioSignalProccesor {
      */
     private var _audioBuffer: ShortArray? = null
 
+    private var _frequencyIntegratorBuffer = DoubleArray(10)
+
     /**
      * Активировать анализатор
      */
@@ -52,15 +56,26 @@ object AudioSignalProccesor {
         }
         val bufSize = _audioBuffer?.size
         var frequency: Double = 0.0
+        var counter = 0
+        var recordingResult: Int? = 0
 
         GlobalScope.launch(Dispatchers.Default){
             _audioRecord?.startRecording();
             //flag = true
             while(actionEnable){
-                _audioRecord?.read(_audioBuffer!!, 0, bufSize!!, AudioRecord.READ_BLOCKING)
-
+                recordingResult = _audioRecord?.read(_audioBuffer!!, 0, bufSize!!, AudioRecord.READ_BLOCKING)
+                Log.d("Recording_res", recordingResult.toString())
                 frequency = YINPitchDetection.detectFrequency(_audioBuffer!!)
-                if(frequency > 0) _mainFrequency.value = frequency
+
+                if (counter >= 10) {
+                    counter = 0
+                    _mainFrequency.value = _frequencyIntegratorBuffer.sum()
+                    continue
+                }
+                if(frequency >= 50.0) {
+                    _frequencyIntegratorBuffer[counter] = frequency * 0.1
+                    counter++
+                }
             }
         }
     }
@@ -96,7 +111,7 @@ object AudioSignalProccesor {
             sampleRate,
             channelConfig,
             audioFormat,
-            internalBufferSize)
+            internalBufferSize*2)
 
         val test = _audioRecord?.state
     }

@@ -6,7 +6,7 @@ object YINPitchDetection {
 
     private val maxLag = (44100.0 / 50.0).toInt(); // 50 Hz - the lowest frequency
 
-    private var diffFuncData = IntArray(maxLag)
+    private var diffFuncData = DoubleArray(maxLag)
 
     private var cmndfData = DoubleArray(maxLag){1.0}
 
@@ -22,7 +22,7 @@ object YINPitchDetection {
         cmndf()
         val firstMinIndex = findFirstLocalMinIndex()
         //не удалось найти
-        if (firstMinIndex == cmndfData.size - 1){
+        if (firstMinIndex < 1){
             return 0.0
         }
         val frequencyPeak = 1 / (timeStep * parabolicInterpolation(findFirstLocalMinIndex()))
@@ -34,13 +34,13 @@ object YINPitchDetection {
      * @brief Рассчитать разностную функцию
      */
     private fun diffFunc(signal : ShortArray){
-        var sum = 0
-        var difference = 0
+        var sum = 0.0
+        var difference = 0.0
         for (tau in diffFuncData.indices) {
-            sum = 0
-            difference = 0
+            sum = 0.0
+            difference = 0.0
             for (j in 0..windowSize){
-                difference = signal[j] - signal[j + tau]
+                difference = (signal[j] - signal[j + tau]).toDouble() / 65535
                 sum += difference * difference
             }
             diffFuncData[tau] = sum
@@ -51,9 +51,9 @@ object YINPitchDetection {
      * @brief Cumulative mean normalized difference function
      */
     private fun cmndf() {
-        var sum:Int = 0
+        var sum:Double = 0.0
         for (tau in 1..(cmndfData.size - 1)) {
-            sum = 0
+            sum = 0.0
             for (j in 0..tau){ // tau max
                 sum += diffFuncData[j]
             }
@@ -66,10 +66,11 @@ object YINPitchDetection {
         while ((cmndfData[counter] > 0.3) && (counter < cmndfData.size - 1)){//threshold
             counter++
         }
-        if(counter >= cmndfData.size - 1){
-            return counter
+        //no minimal extremum in function
+        if(counter >= cmndfData.size - 2){
+            return 0
         }
-        while ((cmndfData[counter] >= cmndfData[counter + 1]) && (counter < cmndfData.size - 1)){
+        while ((cmndfData[counter] >= cmndfData[counter + 1]) && (counter < cmndfData.size - 2)){
             counter++
         }
         return counter
