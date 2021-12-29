@@ -1,26 +1,18 @@
 package com.example.metrotuner
 
-import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.core.content.ContextCompat.getSystemService
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -31,52 +23,90 @@ class MetronomeFragment(): Fragment() {
     private var metronomeStateText: TextView? = null
     private val stateVm: MetronomeStateViewModel by activityViewModels()
     private var mediaPlayer: MediaPlayer? = null
+    private var mediaPlayerAccent: MediaPlayer? = null
+    private var playPauseBtn:ImageButton? = null
+    private var pauseMs: Long = 60_000 / (120.toLong())
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_metronome, container, false)
+        return inflater.inflate(R.layout.fragment_metronome_snd, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         mediaPlayer = MediaPlayer.create(context, R.raw.click)
+        mediaPlayerAccent = MediaPlayer.create(context, R.raw.accent)
 
         // Отображение текущих параметров
-        view.findViewById<TextView>(R.id.bpm_text).text = getString(R.string.bpm_text, stateVm.bpm)
-        view.findViewById<TextView>(R.id.beats_text).text = getString(R.string.beats_text, stateVm.beats, stateVm.divider)
+        val bpmTextView = view.findViewById<TextView>(R.id.mtrn_bpm_text_view)
+        bpmTextView.text = getString(R.string.bpm_text, stateVm.bpm)
+        bpmTextView.setOnClickListener {
+            findNavController().navigate(R.id.metronomeSettingsFragment)
+        }
+        view.findViewById<TextView>(R.id.beats_text_view).text = getString(R.string.beats_text, stateVm.beats)
+        view.findViewById<TextView>(R.id.accent_text_view).text = getString(R.string.accent_text, stateVm.accent)
 
+        lifecycleScope.launch(Dispatchers.Main){
+            stateVm.bpmFlow.collect {
+                pauseMs = 60_000 / (it.toLong())
+                bpmTextView.text = it.toString()
+            }
+        }
         // Запуск/остановка метронома
-        view.findViewById<Button>(R.id.metronome_start_pause_btn).setOnClickListener {
+        playPauseBtn = view.findViewById<ImageButton>(R.id.mtrn_play_pause_btn)
+        playPauseBtn?.setOnClickListener {
             counterState = !counterState
             if(counterState){
+                playPauseBtn?.setImageResource(R.drawable.ic_baseline_pause_circle_filled_64)
                 counterLoop()
+            } else {
+                playPauseBtn?.setImageResource(R.drawable.ic_baseline_play_circle_filled_64)
             }
         }
 
-        metronomeStateText = view.findViewById(R.id.metronome_state_text)
+        metronomeStateText = view.findViewById(R.id.metronome_state_text_view)
 
-        view.findViewById<LinearLayout>(R.id.metronome_settings).setOnClickListener {
+        view.findViewById<LinearLayout>(R.id.beats_settings_linear_layout).setOnClickListener {
             findNavController().navigate(R.id.metronomeSettingsFragment)
         }
 
+        view.findViewById<Button>(R.id.pls_1_bpm_btn).setOnClickListener {
+            stateVm.changeBpm(1)
+        }
+
+        view.findViewById<Button>(R.id.pls_5_bpm_btn).setOnClickListener {
+            stateVm.changeBpm(5)
+        }
+
+        view.findViewById<Button>(R.id.min_1_bpm_btn).setOnClickListener {
+            stateVm.changeBpm(-1)
+        }
+
+        view.findViewById<Button>(R.id.min_5_bpm_btn).setOnClickListener {
+            stateVm.changeBpm(-5)
+        }
 
     }
 
     private fun counterLoop() {
-        val pauseMs: Long = 60_000 / (stateVm.bpm.toLong())
+
         val countMax: Int = stateVm.beats
-        GlobalScope.launch(Dispatchers.Default){
+        lifecycleScope.launch(Dispatchers.Default){
             while (counterState){
                 // Обнуление счётчика долей
                 if(counter >= countMax) counter = 0
                 counter++
-                mediaPlayer?.start()
+                if(counter == 1) {
+                    mediaPlayerAccent?.start()
+                }else {
+                    mediaPlayer?.start()
+                }
                 // Отображение текущей доли
-                GlobalScope.launch(Dispatchers.Main) {
+                lifecycleScope.launch(Dispatchers.Main) {
                     metronomeStateText?.text = counter.toString()
                 }
                 delay(pauseMs)
@@ -88,6 +118,12 @@ class MetronomeFragment(): Fragment() {
         super.onPause()
         metronomeStateText?.text = "0"
         counterState = false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        playPauseBtn?.setImageResource(R.drawable.ic_baseline_play_circle_filled_64)
+        counter = 0
     }
 
 }

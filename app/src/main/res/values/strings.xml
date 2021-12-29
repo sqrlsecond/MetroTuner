@@ -13,8 +13,14 @@
     <string name="beats_hint">beats</string>
     <string name="divider_hint">divider</string>
     <string name="bpm_text">bpm: %1$d</string>
-    <string name="beats_text">beats: %1$d / %2$d</string>
+    <string name="beats_text">beats: %1$d</string>
     <string name="metronome_preset">bpm: %1$d beats: %2$d / %3$d</string>
     <string name="save_preset">Save preset</string>
-    <string name="hint_save_profile">Enter name...</string>
+    <string name="hint_save_profile">Enter name…</string>
+    <string name="play_pause_btn_placeholder">Play/pause</string>
+    <string name="min_5_bpm_btn_text">-5</string>
+    <string name="min_1_bpm_btn_text">-1</string>
+    <string name="pls_1_bpm_btn_text">+1</string>
+    <string name="pls_5_bpm_btn_text">+5</string>
+    <string name="accent_text">accent: %1$s</string>
 </resources>
