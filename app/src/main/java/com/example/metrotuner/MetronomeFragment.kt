@@ -43,7 +43,7 @@ class MetronomeFragment(): Fragment() {
 
         // Отображение текущих параметров
         val bpmTextView = view.findViewById<TextView>(R.id.mtrn_bpm_text_view)
-        bpmTextView.text = getString(R.string.bpm_text, stateVm.bpm)
+        bpmTextView.text = stateVm.bpmFlow.value.toString()
         bpmTextView.setOnClickListener {
             findNavController().navigate(R.id.metronomeSettingsFragment)
         }
@@ -93,7 +93,7 @@ class MetronomeFragment(): Fragment() {
     }
 
     private fun counterLoop() {
-
+        counter = 0
         val countMax: Int = stateVm.beats
         lifecycleScope.launch(Dispatchers.Default){
             while (counterState){
@@ -123,7 +123,6 @@ class MetronomeFragment(): Fragment() {
     override fun onResume() {
         super.onResume()
         playPauseBtn?.setImageResource(R.drawable.ic_baseline_play_circle_filled_64)
-        counter = 0
     }
 
 }
