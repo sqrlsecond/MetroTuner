@@ -3,9 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3828125" />
+        <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/drawable/button_custom.xml" value="0.3828125" />
+        <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/drawable/circle_button_drw.xml" value="0.3828125" />
+        <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/drawable/ic_baseline_pause_circle_filled_64.xml" value="0.3828125" />
+        <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/drawable/ic_baseline_play_circle_filled_64.xml" value="0.3828125" />
+        <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3828125" />
         <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/layout/dialog_profile_save.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/layout/fragment_metronome.xml" value="0.22" />
+        <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/layout/fragment_metronome.xml" value="0.33" />
         <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/layout/fragment_metronome_settings.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/layout/fragment_metronome_snd.xml" value="0.33" />
         <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/layout/fragment_tuner.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Public/AndroidStudioProject/MetroTuner/app/src/main/res/layout/metronome_preset_item.xml" value="0.9" />
       </map>

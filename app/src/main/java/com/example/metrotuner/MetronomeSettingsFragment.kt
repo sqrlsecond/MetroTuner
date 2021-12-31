@@ -1,6 +1,7 @@
 package com.example.metrotuner
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,18 +45,27 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
 
          bpmEdit = view.findViewById<EditText>(R.id.bpm_edit)
          beatsEdit = view.findViewById<EditText>(R.id.beats_count_edit)
-         dividerEdit = view.findViewById<EditText>(R.id.divider_edit)
 
-        bpmEdit?.setText(stateVm.bpm.toString())
+
+        //bpmEdit?.setText(stateVm.bpm.toString())
+        bpmEdit?.setText(stateVm.bpmFlow.value.toString())
         beatsEdit?.setText(stateVm.beats.toString())
-        dividerEdit?.setText(stateVm.divider.toString())
+
 
         //Подтверждение новых настроек
         view.findViewById<Button>(R.id.settings_confirm_btn).setOnClickListener {
 
-            stateVm.bpm = bpmEdit?.text.toString().toInt()
-            stateVm.beats = beatsEdit?.text.toString().toInt()
-            stateVm.divider = dividerEdit?.text.toString().toInt()
+            //stateVm.bpm = bpmEdit?.text.toString().toInt()
+            val bpmString = bpmEdit?.text.toString()
+            if((TextUtils.isDigitsOnly(bpmString)) && !(TextUtils.isEmpty(bpmString))){
+                stateVm.setBpmValue(bpmString.toInt())
+            }
+            val beatsString = beatsEdit?.text.toString()
+            if((TextUtils.isDigitsOnly(beatsString)) && !(TextUtils.isEmpty(beatsString))){
+                stateVm.beats = beatsString.toInt()
+            }
+
+
 
             findNavController().popBackStack()
         }
@@ -90,7 +100,6 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
 
         stateVm.bpm = bpmEdit?.text.toString().toInt()
         stateVm.beats = beatsEdit?.text.toString().toInt()
-        stateVm.divider = dividerEdit?.text.toString().toInt()
 
         val entity = MetronomeSettingsEntity(
             name,
