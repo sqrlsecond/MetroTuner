@@ -9,7 +9,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.metrotuner"
+        applicationId "ru.makarovda.metrotuner"
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 1

@@ -14,7 +14,7 @@
     <string name="divider_hint">divider</string>
     <string name="bpm_text">%1$d</string>
     <string name="beats_text">beats: %1$d</string>
-    <string name="metronome_preset">bpm: %1$d beats: %2$d / %3$d</string>
+    <string name="metronome_preset">bpm: %1$d beats: %2$d accent %3$s</string>
     <string name="save_preset">Save preset</string>
     <string name="hint_save_profile">Enter name…</string>
     <string name="play_pause_btn_placeholder">Play/pause</string>
