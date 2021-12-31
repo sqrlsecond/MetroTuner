@@ -12,7 +12,9 @@ object FrequencyNoteConverter{
         }
         val semitonesCount = 12 * log2(frequency / 440.0)
 
-        val octaveNumber = 4 + (semitonesCount / 12).toInt()
+        //Из-за особенностей спектра звуков музыкальных инструментов
+        //Октава определяется неверно
+        //val octaveNumber = 4 + (semitonesCount / 12).toInt()
 
         val sign = if (semitonesCount > 0) -1 else 1
 
@@ -24,7 +26,8 @@ object FrequencyNoteConverter{
 
         val cents = (sign * (abs(semitonesCount % 12) - abs(round(semitonesCount % 12))) * 100).toInt()
 
-        val noteName: String = noteLiterals[index] + octaveNumber.toString()
+        //val noteName: String = noteLiterals[index] + octaveNumber.toString()
+        val noteName: String = noteLiterals[index]
 
         return NoteMus(noteName, cents, frequency)
     }
