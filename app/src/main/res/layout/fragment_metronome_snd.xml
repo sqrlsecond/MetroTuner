@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:foregroundTintMode="add">
+    android:foregroundTintMode="add"
+    android:textAlignment="center">
 
     <View
         android:id="@+id/divider"
@@ -22,64 +23,72 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/metronome_start"
+        android:textSize="20pt"
         app:layout_constraintBottom_toTopOf="@id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textSize="20pt"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/mtrn_bpm_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="72dp"
+        android:layout_height="48dp"
         android:text="@string/bpm_text"
+        android:textAlignment="center"
+        android:textSize="12pt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider"
-        android:textSize="12pt"/>
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/min_5_bpm_btn"
         style="@style/MetronomeButton"
         android:text="@string/min_5_bpm_btn_text"
         app:layout_constraintBottom_toTopOf="@+id/mtrn_bpm_text_view"
         app:layout_constraintEnd_toStartOf="@+id/mtrn_bpm_text_view"
+        app:layout_constraintHorizontal_bias="0.696"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        app:layout_constraintVertical_bias="1.0" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/pls_5_bpm_btn"
         style="@style/MetronomeButton"
         android:text="@string/pls_5_bpm_btn_text"
         app:layout_constraintBottom_toTopOf="@+id/mtrn_bpm_text_view"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintStart_toEndOf="@+id/mtrn_bpm_text_view"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        app:layout_constraintVertical_bias="1.0" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/min_1_bpm_btn"
         style="@style/MetronomeButton"
         android:text="@string/min_1_bpm_btn_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/mtrn_bpm_text_view"
+        app:layout_constraintHorizontal_bias="0.7"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mtrn_bpm_text_view"
-        />
+        app:layout_constraintVertical_bias="0.0" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/pls_1_bpm_btn"
         style="@style/MetronomeButton"
         android:text="@string/pls_1_bpm_btn_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.297"
         app:layout_constraintStart_toEndOf="@+id/mtrn_bpm_text_view"
-        app:layout_constraintTop_toBottomOf="@+id/mtrn_bpm_text_view" />
+        app:layout_constraintTop_toBottomOf="@+id/mtrn_bpm_text_view"
+        app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
         android:id="@+id/beats_settings_linear_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -90,13 +99,15 @@
             android:id="@+id/beats_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/beats_text" />
+            android:text="@string/beats_text"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/accent_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/accent_text" />
+            android:text="@string/accent_text"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <ImageButton

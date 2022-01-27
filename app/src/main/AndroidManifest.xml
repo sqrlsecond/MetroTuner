@@ -7,9 +7,9 @@
     <application
         android:name="ru.makarovda.metrotuner.MetroTunerApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_metrotuner"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_metrotuner_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MetroTuner">
         <activity android:name="ru.makarovda.metrotuner.ui.MainActivity">

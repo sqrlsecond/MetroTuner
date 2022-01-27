@@ -39,9 +39,6 @@ class MetronomeFragment(): Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mediaPlayer = MediaPlayer.create(context, R.raw.click)
-        mediaPlayerAccent = MediaPlayer.create(context, R.raw.accent)
-
         // Отображение текущих параметров
         val bpmTextView = view.findViewById<TextView>(R.id.mtrn_bpm_text_view)
         bpmTextView.text = stateVm.bpmFlow.value.toString()
@@ -94,6 +91,10 @@ class MetronomeFragment(): Fragment() {
     }
 
     private fun counterLoop() {
+
+        mediaPlayer = MediaPlayer.create(context, R.raw.click)
+        mediaPlayerAccent = MediaPlayer.create(context, R.raw.accent)
+
         counter = 0
         val countMax: Int = stateVm.beats
         lifecycleScope.launch(Dispatchers.Default){
@@ -112,11 +113,14 @@ class MetronomeFragment(): Fragment() {
                 }
                 delay(pauseMs)
             }
+            mediaPlayerAccent?.release()
+            mediaPlayer?.release()
         }
     }
 
     override fun onPause() {
         super.onPause()
+
         metronomeStateText?.text = "0"
         counterState = false
     }
