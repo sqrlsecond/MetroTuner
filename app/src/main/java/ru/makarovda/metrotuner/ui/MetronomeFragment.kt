@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.makarovda.metrotuner.R
 
@@ -46,7 +45,7 @@ class MetronomeFragment(): Fragment() {
             findNavController().navigate(R.id.metronomeSettingsFragment)
         }
         view.findViewById<TextView>(R.id.beats_text_view).text = getString(R.string.beats_text, stateVm.beats)
-        view.findViewById<TextView>(R.id.accent_text_view).text = getString(R.string.accent_text, stateVm.accent)
+        view.findViewById<TextView>(R.id.accent_text_view).text = getString(R.string.accent_text, stateVm.accentStr)
 
         lifecycleScope.launch(Dispatchers.Main){
             stateVm.bpmFlow.collect {
@@ -96,15 +95,20 @@ class MetronomeFragment(): Fragment() {
         mediaPlayerAccent = MediaPlayer.create(context, R.raw.accent)
 
         counter = 0
-        val countMax: Int = stateVm.beats
+        val countMax: Int = stateVm.accents.size
         lifecycleScope.launch(Dispatchers.Default){
             while (counterState){
                 // Обнуление счётчика долей
                 if(counter >= countMax) counter = 0
                 counter++
-                if(counter == 1) {
+        /*        if(counter == 1) {
                     mediaPlayerAccent?.start()
                 }else {
+                    mediaPlayer?.start()
+                }*/
+                if(stateVm.accents[counter-1]) {//Сильная доля
+                    mediaPlayerAccent?.start()
+                } else {//Слабая доля
                     mediaPlayer?.start()
                 }
                 // Отображение текущей доли

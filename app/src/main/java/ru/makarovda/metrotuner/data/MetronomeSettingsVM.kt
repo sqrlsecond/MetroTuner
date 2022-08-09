@@ -1,11 +1,9 @@
-package ru.makarovda.metrotuner
+package ru.makarovda.metrotuner.data
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.makarovda.metrotuner.data.MetronomeSettingsEntity
-import ru.makarovda.metrotuner.data.MetronomeSettingsRepository
 
 /**
  * Класс для взаимодействия с репозиторием для доступа к списку сохраненных профилей
@@ -30,7 +28,8 @@ class MetronomeSettingsVM(private val repository: MetronomeSettingsRepository): 
 
 class MetronomeSettingsVMFactory(private val repository: MetronomeSettingsRepository) : ViewModelProvider.Factory
 {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MetronomeSettingsVM::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return MetronomeSettingsVM(repository) as T

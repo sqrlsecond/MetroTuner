@@ -13,8 +13,8 @@ interface MetronomeSettingsDao {
     fun getAll(): Flow<List<MetronomeSettingsEntity>>
 
     @Insert
-    suspend fun insert(settingsEntity: MetronomeSettingsEntity)
+    fun insert(settingsEntity: MetronomeSettingsEntity)
 
     @Delete
-    suspend fun delete(settingsEntity: MetronomeSettingsEntity)
+    fun delete(settingsEntity: MetronomeSettingsEntity)
 }

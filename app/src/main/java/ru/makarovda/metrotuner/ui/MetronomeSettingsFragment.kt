@@ -7,18 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import ru.makarovda.metrotuner.*
-import ru.makarovda.metrotuner.data.MetronomeSettingsEntity
+import ru.makarovda.metrotuner.data.*
 
 class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListener {
 
@@ -28,7 +27,7 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
     }
 
     private var bpmEdit: EditText? = null
-    private var beatsEdit: EditText? = null
+    private var beatsTextView: TextView? = null
     private var dividerEdit: EditText?  = null
 
     override fun onCreateView(
@@ -45,13 +44,23 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Вывод и изменение акцентов на долях
+        val accentsAdapter = AccentsItemsAdapter(stateVm.accents, nonAccentColor = ResourcesCompat.getColor(resources, R.color.blue_800, null),
+                                                accentColor = ResourcesCompat.getColor(resources, R.color.red, null))
+        view.findViewById<RecyclerView>(R.id.accents_list).apply {
+            adapter = accentsAdapter
+            layoutManager = GridLayoutManager(context, 4)
+            //layoutManager = LinearLayoutManager(context)
+        }
+
+
          bpmEdit = view.findViewById<EditText>(R.id.bpm_edit)
-         beatsEdit = view.findViewById<EditText>(R.id.beats_count_edit)
+         beatsTextView = view.findViewById<TextView>(R.id.beats_count_text)
 
 
         //bpmEdit?.setText(stateVm.bpm.toString())
         bpmEdit?.setText(stateVm.bpmFlow.value.toString())
-        beatsEdit?.setText(stateVm.beats.toString())
+        beatsTextView?.text = stateVm.beats.toString()
 
 
         //Подтверждение новых настроек
@@ -62,10 +71,10 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
             if((TextUtils.isDigitsOnly(bpmString)) && !(TextUtils.isEmpty(bpmString))){
                 stateVm.setBpmValue(bpmString.toInt())
             }
-            val beatsString = beatsEdit?.text.toString()
+            /*val beatsString = beatsEdit?.text.toString()
             if((TextUtils.isDigitsOnly(beatsString)) && !(TextUtils.isEmpty(beatsString))){
                 stateVm.beats = beatsString.toInt()
-            }
+            }*/
 
 
 
@@ -73,7 +82,7 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
         }
 
         // Список сохранённых профилей
-        val recView = view.findViewById<RecyclerView>(R.id.presets_list)
+        /*val recView = view.findViewById<RecyclerView>(R.id.accents_list)
         val adapterPresets = PresetsListAdapter(){ entity: MetronomeSettingsEntity,
                                                    action: PresetsListAdapter.Actions ->
                                                   clickListener(entity, action)
@@ -85,12 +94,27 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
         }
         recView.adapter = adapterPresets
 
-        recView.layoutManager = LinearLayoutManager(requireContext())
+        recView.layoutManager = LinearLayoutManager(requireContext())*/
 
         view.findViewById<Button>(R.id.save_preset_btn).setOnClickListener {
             EnterPresetNameDialog().apply {
                 setResultListener(this@MetronomeSettingsFragment)
             }.show(parentFragmentManager, "save Dialog")
+        }
+
+        view.findViewById<Toolbar>(R.id.toolbar).setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        //Изменение числа долей в такте
+        view.findViewById<Button>(R.id.plus_beat_btn).setOnClickListener(){
+            stateVm.accents.push(false)
+            accentsAdapter.notifyDataSetChanged()
+        }
+
+        view.findViewById<Button>(R.id.minus_beat_btn).setOnClickListener(){
+            stateVm.accents.pop()
+            accentsAdapter.notifyDataSetChanged()
         }
     }
 
@@ -101,13 +125,13 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
         }
 
         stateVm.bpm = bpmEdit?.text.toString().toInt()
-        stateVm.beats = beatsEdit?.text.toString().toInt()
+        //stateVm.beats = beatsEdit?.text.toString().toInt()
 
         val entity = MetronomeSettingsEntity(
             name,
             stateVm.bpm,
             stateVm.beats,
-            stateVm.accent,
+            stateVm.accentStr,
         )
         profilesVm.addProfile(entity)
     }
@@ -117,8 +141,8 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
         when(action){
             PresetsListAdapter.Actions.CHOOSE -> {
                 stateVm.bpm = entity.bpm
-                stateVm.beats = entity.beats
-                stateVm.accent = entity.accent
+                //stateVm.beats = entity.beats
+                //stateVm.accentStr = entity.accent
 
                 findNavController().popBackStack()
             }
@@ -134,7 +158,7 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
     override fun onDestroyView() {
         super.onDestroyView()
         bpmEdit = null
-        beatsEdit = null
+        beatsTextView = null
         dividerEdit = null
     }
 }
