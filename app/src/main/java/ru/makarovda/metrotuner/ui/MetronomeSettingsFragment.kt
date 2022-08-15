@@ -76,8 +76,6 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
                 stateVm.beats = beatsString.toInt()
             }*/
 
-
-
             findNavController().popBackStack()
         }
 
@@ -110,11 +108,13 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
         view.findViewById<Button>(R.id.plus_beat_btn).setOnClickListener(){
             stateVm.accents.push(false)
             accentsAdapter.notifyDataSetChanged()
+            beatsTextView?.text = stateVm.beats.toString()
         }
 
         view.findViewById<Button>(R.id.minus_beat_btn).setOnClickListener(){
             stateVm.accents.pop()
             accentsAdapter.notifyDataSetChanged()
+            beatsTextView?.text = stateVm.beats.toString()
         }
     }
 

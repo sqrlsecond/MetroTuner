@@ -29,61 +29,68 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/mtrn_bpm_text_view"
-        android:layout_width="72dp"
-        android:layout_height="48dp"
-        android:text="@string/bpm_text"
-        android:textAlignment="center"
-        android:textSize="12pt"
+    <LinearLayout
+        android:id="@+id/metronome_bpm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        app:layout_constraintVertical_bias="0.19">
+
+        <TextView
+            android:id="@+id/mtrn_bpm_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bpm_text"
+
+            android:textSize="12pt" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_border_color_24" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/min_5_bpm_btn"
         style="@style/MetronomeButton"
+        android:layout_marginStart="48dp"
         android:text="@string/min_5_bpm_btn_text"
-        app:layout_constraintBottom_toTopOf="@+id/mtrn_bpm_text_view"
-        app:layout_constraintEnd_toStartOf="@+id/mtrn_bpm_text_view"
-        app:layout_constraintHorizontal_bias="0.696"
+        app:layout_constraintBottom_toBottomOf="@+id/metronome_bpm"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/metronome_bpm" />
 
     <Button
         android:id="@+id/pls_5_bpm_btn"
         style="@style/MetronomeButton"
+        android:layout_marginEnd="48dp"
         android:text="@string/pls_5_bpm_btn_text"
-        app:layout_constraintBottom_toTopOf="@+id/mtrn_bpm_text_view"
+        app:layout_constraintBottom_toBottomOf="@+id/metronome_bpm"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.3"
-        app:layout_constraintStart_toEndOf="@+id/mtrn_bpm_text_view"
-        app:layout_constraintTop_toBottomOf="@+id/divider"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/metronome_bpm" />
 
     <Button
         android:id="@+id/min_1_bpm_btn"
         style="@style/MetronomeButton"
+        android:layout_marginStart="48dp"
         android:text="@string/min_1_bpm_btn_text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/mtrn_bpm_text_view"
-        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintBottom_toBottomOf="@+id/tap_tempo_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mtrn_bpm_text_view"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/tap_tempo_button" />
 
     <Button
         android:id="@+id/pls_1_bpm_btn"
         style="@style/MetronomeButton"
+        android:layout_marginEnd="48dp"
         android:text="@string/pls_1_bpm_btn_text"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/tap_tempo_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.297"
-        app:layout_constraintStart_toEndOf="@+id/mtrn_bpm_text_view"
-        app:layout_constraintTop_toBottomOf="@+id/mtrn_bpm_text_view"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/tap_tempo_button" />
 
     <LinearLayout
         android:id="@+id/beats_settings_linear_layout"
@@ -123,5 +130,16 @@
         app:layout_constraintTop_toBottomOf="@id/metronome_state_text_view"
         app:layout_constraintVertical_bias="0.8"
         app:srcCompat="@drawable/ic_baseline_play_circle_filled_64" />
+
+    <Button
+        android:id="@+id/tap_tempo_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TAP"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/metronome_bpm"
+        app:layout_constraintVertical_bias="0.505" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

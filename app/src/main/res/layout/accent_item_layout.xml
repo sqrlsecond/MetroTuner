@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/acc_item_number_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="TextView" />
+
+    <View
+        android:id="@+id/acc_item_color_view"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+
+        android:layout_margin="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/blue_800"
+        />
+</LinearLayout>

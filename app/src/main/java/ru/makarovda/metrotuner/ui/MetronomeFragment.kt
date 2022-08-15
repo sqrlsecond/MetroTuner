@@ -2,6 +2,7 @@ package ru.makarovda.metrotuner.ui
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,8 @@ class MetronomeFragment(): Fragment() {
     private var mediaPlayerAccent: MediaPlayer? = null
     private var playPauseBtn:ImageButton? = null
     private var pauseMs: Long = 60_000 / (120.toLong())
+    private var tempoCounterActivated = false
+    private var tempCounter: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,11 +44,18 @@ class MetronomeFragment(): Fragment() {
         // Отображение текущих параметров
         val bpmTextView = view.findViewById<TextView>(R.id.mtrn_bpm_text_view)
         bpmTextView.text = stateVm.bpmFlow.value.toString()
-        bpmTextView.setOnClickListener {
+        view.findViewById<LinearLayout>(R.id.metronome_bpm).setOnClickListener {
             findNavController().navigate(R.id.metronomeSettingsFragment)
         }
         view.findViewById<TextView>(R.id.beats_text_view).text = getString(R.string.beats_text, stateVm.beats)
-        view.findViewById<TextView>(R.id.accent_text_view).text = getString(R.string.accent_text, stateVm.accentStr)
+        // Отображение сильных долей в такте
+        val accentsArr = ArrayList<String>()
+        for ((index, value) in stateVm.accents.iterator().withIndex()){
+            if (value) {
+                accentsArr.add((index + 1).toString())
+            }
+        }
+        view.findViewById<TextView>(R.id.accent_text_view).text = getString(R.string.accent_text, accentsArr.joinToString())
 
         lifecycleScope.launch(Dispatchers.Main){
             stateVm.bpmFlow.collect {
@@ -85,6 +95,10 @@ class MetronomeFragment(): Fragment() {
 
         view.findViewById<Button>(R.id.min_5_bpm_btn).setOnClickListener {
             stateVm.changeBpm(-5)
+        }
+
+        view.findViewById<Button>(R.id.tap_tempo_button).setOnClickListener {
+            stateVm.tempClickHandler()
         }
 
     }
@@ -132,6 +146,22 @@ class MetronomeFragment(): Fragment() {
     override fun onResume() {
         super.onResume()
         playPauseBtn?.setImageResource(R.drawable.ic_baseline_play_circle_filled_64)
+    }
+
+    private fun tapTempoHandler(view: View){
+        if(!tempoCounterActivated){
+            lifecycleScope.launch(Dispatchers.Main) {
+                tempoCounterActivated = true
+                while(counter < 6000) {
+                    counter++
+                    delay(10)
+                }
+                tempoCounterActivated = false
+            }
+        } else {
+            stateVm.setBpmValue((6000.0f / counter.toFloat()).toInt())
+            counter = 0
+        }
     }
 
 }

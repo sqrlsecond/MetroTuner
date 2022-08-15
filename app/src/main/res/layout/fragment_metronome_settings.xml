@@ -92,4 +92,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/beats_count_text"
         app:layout_constraintTop_toTopOf="@+id/beats_count_text" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BPM: "
+        app:layout_constraintBottom_toBottomOf="@+id/bpm_edit"
+        app:layout_constraintEnd_toStartOf="@+id/bpm_edit"
+        app:layout_constraintTop_toTopOf="@+id/bpm_edit" />
 </androidx.constraintlayout.widget.ConstraintLayout>

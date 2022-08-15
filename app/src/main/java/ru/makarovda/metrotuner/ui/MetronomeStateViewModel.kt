@@ -1,10 +1,12 @@
 package ru.makarovda.metrotuner.ui
 
+import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import ru.makarovda.metrotuner.utility.EventIntervalCalculator
 import java.util.*
 
 /**
@@ -15,7 +17,7 @@ class MetronomeStateViewModel: ViewModel() {
     var bpm: Int = 120
 
     // Стек с описанием долей в такте
-    var accents: Stack<Boolean> = Stack<Boolean>().apply{
+     var accents: Stack<Boolean> = Stack<Boolean>().apply{
         addAll(arrayOf(true, false, false, false))
     }
     private set
@@ -37,6 +39,10 @@ class MetronomeStateViewModel: ViewModel() {
     private val _bpmFlow = MutableStateFlow<Int>(120)
     val bpmFlow : StateFlow<Int>
         get() = _bpmFlow
+
+    private val tempCalc = EventIntervalCalculator(10, 6000, 10, viewModelScope) {
+        _bpmFlow.value = it
+    }
 
 
     // Изменение числа ударов в минуту
@@ -64,5 +70,16 @@ class MetronomeStateViewModel: ViewModel() {
         }
     }
 
+    fun changeBeats(delta: Int){
+        if(delta < 0) {
+            accents.pop()
+        } else if(delta > 0) {
+            accents.push(false)
+        }
+    }
+
+    fun tempClickHandler() {
+        tempCalc.eventHandler()
+    }
 
 }
