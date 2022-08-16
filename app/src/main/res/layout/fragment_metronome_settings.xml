@@ -23,10 +23,10 @@
         android:id="@+id/beats_count_text"
         android:layout_width="64dp"
         android:layout_height="wrap_content"
-        android:textSize="10pt"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="72dp"
         android:text="@string/beats_hint"
         android:textAlignment="center"
+        android:textSize="10pt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bpm_edit" />
@@ -45,7 +45,7 @@
         android:id="@+id/accents_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/beats_count_text" />
@@ -97,8 +97,28 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="8pt"
         android:text="BPM: "
         app:layout_constraintBottom_toBottomOf="@+id/bpm_edit"
         app:layout_constraintEnd_toStartOf="@+id/bpm_edit"
         app:layout_constraintTop_toTopOf="@+id/bpm_edit" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textSize="8pt"
+        android:text="Beats:"
+        app:layout_constraintBottom_toTopOf="@+id/beats_count_text"
+        app:layout_constraintStart_toStartOf="@+id/plus_beat_btn" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="8pt"
+        android:text="Accents:"
+        app:layout_constraintBottom_toTopOf="@+id/accents_list"
+        app:layout_constraintStart_toStartOf="@+id/plus_beat_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
