@@ -19,4 +19,8 @@ class Averager(private val bufferCapacity: Int) {
         }
         buffer.addLast(value)
     }
+
+    fun cleanBuffer(){
+        buffer.clear()
+    }
 }

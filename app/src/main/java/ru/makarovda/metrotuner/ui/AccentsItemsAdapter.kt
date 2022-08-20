@@ -7,9 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.makarovda.metrotuner.R
 
-class AccentsItemsAdapter(private var accentsPattern: MutableList<Boolean>,
+class AccentsItemsAdapter(var accentsPattern: List<Boolean>,
                           private val nonAccentColor: Int,
-                          private val accentColor: Int  ): RecyclerView.Adapter<AccentsItemsAdapter.ViewHolder>() {
+                          private val accentColor: Int,
+                          private val handler: (Int) -> Unit  ): RecyclerView.Adapter<AccentsItemsAdapter.ViewHolder>() {
 
 
 
@@ -35,10 +36,7 @@ class AccentsItemsAdapter(private var accentsPattern: MutableList<Boolean>,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.accent_item_layout, parent, false)
-        return ViewHolder(view, nonAccentColor, accentColor){
-            accentsPattern[it] = !accentsPattern[it]
-            notifyDataSetChanged()
-        }
+        return ViewHolder(view, nonAccentColor, accentColor, handler)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

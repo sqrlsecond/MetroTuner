@@ -1,37 +1,43 @@
 package ru.makarovda.metrotuner.ui
 
-import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import ru.makarovda.metrotuner.utility.EventIntervalCalculator
 import java.util.*
+import kotlin.math.round
 
 /**
  *   ViewModel для описания текущего состояния
  */
 class MetronomeStateViewModel: ViewModel() {
+
+    enum class DeltaBeats{
+        PLUS_ONE,
+        MINUS_ONE
+    }
+
     // Количество ударов в минуту
     var bpm: Int = 120
 
     // Стек с описанием долей в такте
-     var accents: Stack<Boolean> = Stack<Boolean>().apply{
+    private var _accents: Stack<Boolean> = Stack<Boolean>().apply{
         addAll(arrayOf(true, false, false, false))
     }
-    private set
+    val accents: List<Boolean>
+        get() = _accents
 
     // Количество ударов в такте
     val beats: Int
-        get() = accents.size
+        get() = _accents.size
 
     // Размер
     var divider: Int = 4
     val accentStr: String
        get() {
-            val accentsChars = Array<Char>(accents.size){
-                if (accents[it]) 'X' else 'x'
+            val accentsChars = Array<Char>(_accents.size){
+                if (_accents[it]) 'X' else 'x'
             }
             return String(accentsChars.toCharArray())
        }
@@ -41,9 +47,10 @@ class MetronomeStateViewModel: ViewModel() {
         get() = _bpmFlow
 
     private val tempCalc = EventIntervalCalculator(10, 6000, 10, viewModelScope) {
-        _bpmFlow.value = it
+        setBpmValue(round(6000.0 / it.toDouble()).toInt())
     }
 
+    private val beatsObservers: ArrayList<IBeatsObserver> = ArrayList<IBeatsObserver>()
 
     // Изменение числа ударов в минуту
     // delta - значение, которое необходимо добавить
@@ -65,21 +72,42 @@ class MetronomeStateViewModel: ViewModel() {
         val accentsArr = Array(beatsStr.length){
             beatsStr[it] == 'X'
         }
-        accents = Stack<Boolean>().apply {
+        _accents = Stack<Boolean>().apply {
             addAll(accentsArr)
         }
     }
 
-    fun changeBeats(delta: Int){
-        if(delta < 0) {
-            accents.pop()
-        } else if(delta > 0) {
-            accents.push(false)
+    fun changeBeats(delta: DeltaBeats){
+        when (delta){
+            DeltaBeats.MINUS_ONE -> {if(_accents.size > 1) _accents.pop()}
+            DeltaBeats.PLUS_ONE-> {if(_accents.size < 12) _accents.push(false)}
         }
+        notifyBeatsObservers()
     }
 
     fun tempClickHandler() {
         tempCalc.eventHandler()
     }
 
+    fun changeAccent(index: Int){
+        if (index >= 0 && index < _accents.size){
+            _accents[index] = !_accents[index]
+            notifyBeatsObservers()
+        }
+    }
+
+    fun addBeatsObserver(obs: IBeatsObserver){
+        beatsObservers.add(obs)
+        obs.notifyBeatsObserver(_accents)
+    }
+
+    fun removeBeatsObserver(obs: IBeatsObserver){
+        beatsObservers.remove(obs)
+    }
+
+    private fun notifyBeatsObservers(){
+        beatsObservers.forEach{
+            it.notifyBeatsObserver(_accents)
+        }
+    }
 }

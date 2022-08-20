@@ -54,12 +54,14 @@ class TunerFragment(): Fragment() {
         super.onResume()
         val noteText = fragLayout?.findViewById<TextView>(R.id.noteTextView)
         val centsText = fragLayout?.findViewById<TextView>(R.id.centsTextView)
+        val pitchMeter = fragLayout?.findViewById<HorizontalPitchMeter>(R.id.horizontalPitchMeter)
         lifecycleScope.launch(Dispatchers.Main){
             AudioSignalProccesor.actionOn()
             AudioSignalProccesor.mainFrequency.collect {
                 val note = FrequencyNoteConverter.convert(it)
                 noteText?.text = note.nearestNote
                 centsText?.text = note.cents.toString()
+                pitchMeter?.setDeviation(note.cents)
             }
         }
     }

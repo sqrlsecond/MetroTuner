@@ -25,6 +25,7 @@ class EventIntervalCalculator(bufferCapacity: Int,
                     counter++
                 }
                 isCounting = false
+                averager.cleanBuffer()
             }
         } else {
             averager.push(counter)

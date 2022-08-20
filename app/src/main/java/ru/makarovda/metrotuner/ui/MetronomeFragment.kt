@@ -109,7 +109,8 @@ class MetronomeFragment(): Fragment() {
         mediaPlayerAccent = MediaPlayer.create(context, R.raw.accent)
 
         counter = 0
-        val countMax: Int = stateVm.accents.size
+        val beats = stateVm.accents
+        val countMax: Int = beats.size
         lifecycleScope.launch(Dispatchers.Default){
             while (counterState){
                 // Обнуление счётчика долей
@@ -120,7 +121,7 @@ class MetronomeFragment(): Fragment() {
                 }else {
                     mediaPlayer?.start()
                 }*/
-                if(stateVm.accents[counter-1]) {//Сильная доля
+                if(beats[counter-1]) {//Сильная доля
                     mediaPlayerAccent?.start()
                 } else {//Слабая доля
                     mediaPlayer?.start()
@@ -146,22 +147,6 @@ class MetronomeFragment(): Fragment() {
     override fun onResume() {
         super.onResume()
         playPauseBtn?.setImageResource(R.drawable.ic_baseline_play_circle_filled_64)
-    }
-
-    private fun tapTempoHandler(view: View){
-        if(!tempoCounterActivated){
-            lifecycleScope.launch(Dispatchers.Main) {
-                tempoCounterActivated = true
-                while(counter < 6000) {
-                    counter++
-                    delay(10)
-                }
-                tempoCounterActivated = false
-            }
-        } else {
-            stateVm.setBpmValue((6000.0f / counter.toFloat()).toInt())
-            counter = 0
-        }
     }
 
 }
