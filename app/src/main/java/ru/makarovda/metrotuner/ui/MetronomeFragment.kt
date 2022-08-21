@@ -1,11 +1,13 @@
 package ru.makarovda.metrotuner.ui
 
+import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,7 +19,7 @@ import kotlinx.coroutines.launch
 import ru.makarovda.metrotuner.R
 
 
-class MetronomeFragment(): Fragment() {
+class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
 
     private var counterState: Boolean = false
     private var counter: Int = 0
@@ -45,7 +47,11 @@ class MetronomeFragment(): Fragment() {
         val bpmTextView = view.findViewById<TextView>(R.id.mtrn_bpm_text_view)
         bpmTextView.text = stateVm.bpmFlow.value.toString()
         view.findViewById<LinearLayout>(R.id.metronome_bpm).setOnClickListener {
-            findNavController().navigate(R.id.metronomeSettingsFragment)
+            //findNavController().navigate(R.id.metronomeSettingsFragment)
+            val dialogSetBpm = SetBpmDialog().also {
+                it.resultListener = this
+            }
+            dialogSetBpm.show(parentFragmentManager, "Enter BPM")
         }
         view.findViewById<TextView>(R.id.beats_text_view).text = getString(R.string.beats_text, stateVm.beats)
         // Отображение сильных долей в такте
@@ -149,4 +155,7 @@ class MetronomeFragment(): Fragment() {
         playPauseBtn?.setImageResource(R.drawable.ic_baseline_play_circle_filled_64)
     }
 
+    override fun onResult(bpm: Int) {
+        stateVm.setBpmValue(bpm)
+    }
 }

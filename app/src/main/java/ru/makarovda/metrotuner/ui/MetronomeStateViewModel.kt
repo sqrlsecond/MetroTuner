@@ -62,9 +62,13 @@ class MetronomeStateViewModel: ViewModel() {
     }
 
     fun setBpmValue(newBpm: Int){
-        if((newBpm > 0) && (newBpm <= 250)){
-            _bpmFlow.value = newBpm
+        var bpmValue = newBpm
+        if(newBpm < 1){
+            bpmValue = 1
+        } else if(newBpm > 250){
+            bpmValue = 250
         }
+        _bpmFlow.value = bpmValue
     }
 
     fun beatsFromString(beatsStr: String){

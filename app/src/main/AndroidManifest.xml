@@ -14,7 +14,8 @@
         <activity android:name="ru.makarovda.metrotuner.ui.MainActivity"
             android:exported="true"
             android:configChanges="orientation"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

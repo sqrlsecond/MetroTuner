@@ -1,10 +1,12 @@
 package ru.makarovda.metrotuner.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -67,7 +69,6 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
         //bpmEdit?.setText(stateVm.bpm.toString())
         bpmEdit?.setText(stateVm.bpmFlow.value.toString())
         beatsTextView?.text = stateVm.beats.toString()
-
 
         //Подтверждение новых настроек
         view.findViewById<Button>(R.id.settings_confirm_btn).setOnClickListener {
