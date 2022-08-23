@@ -5,19 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/bpm_edit"
-        android:layout_width="64dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:ems="10"
-        android:hint="@string/bpm_hint"
-        android:importantForAutofill="no"
-        android:inputType="number"
-        android:textColorHint="#757575"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
 
     <TextView
         android:id="@+id/beats_count_text"
@@ -29,17 +17,17 @@
         android:textSize="10pt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bpm_edit" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <Button
         android:id="@+id/settings_confirm_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
+        android:layout_marginTop="32dp"
         android:text="@string/settings_confirm_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/accents_list" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/accents_list"
@@ -93,15 +81,6 @@
         app:layout_constraintStart_toEndOf="@+id/beats_count_text"
         app:layout_constraintTop_toTopOf="@+id/beats_count_text" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="8pt"
-        android:text="BPM: "
-        app:layout_constraintBottom_toBottomOf="@+id/bpm_edit"
-        app:layout_constraintEnd_toStartOf="@+id/bpm_edit"
-        app:layout_constraintTop_toTopOf="@+id/bpm_edit" />
 
     <TextView
         android:id="@+id/textView2"

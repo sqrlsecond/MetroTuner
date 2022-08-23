@@ -32,7 +32,6 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
         MetronomeSettingsVMFactory((requireActivity().application as MetroTunerApp).repository!!)
     }*/
 
-    private var bpmEdit: EditText? = null
     private var beatsTextView: TextView? = null
     private var dividerEdit: EditText?  = null
     private var accentsAdapter: AccentsItemsAdapter? = null
@@ -62,26 +61,14 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
         }
 
 
-         bpmEdit = view.findViewById<EditText>(R.id.bpm_edit)
+
          beatsTextView = view.findViewById<TextView>(R.id.beats_count_text)
 
 
-        //bpmEdit?.setText(stateVm.bpm.toString())
-        bpmEdit?.setText(stateVm.bpmFlow.value.toString())
-        beatsTextView?.text = stateVm.beats.toString()
+          beatsTextView?.text = stateVm.beats.toString()
 
         //Подтверждение новых настроек
         view.findViewById<Button>(R.id.settings_confirm_btn).setOnClickListener {
-
-            //stateVm.bpm = bpmEdit?.text.toString().toInt()
-            val bpmString = bpmEdit?.text.toString()
-            if((TextUtils.isDigitsOnly(bpmString)) && !(TextUtils.isEmpty(bpmString))){
-                stateVm.setBpmValue(bpmString.toInt())
-            }
-            /*val beatsString = beatsEdit?.text.toString()
-            if((TextUtils.isDigitsOnly(beatsString)) && !(TextUtils.isEmpty(beatsString))){
-                stateVm.beats = beatsString.toInt()
-            }*/
 
             findNavController().popBackStack()
         }
@@ -131,16 +118,6 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
             return
         }
 
-        stateVm.bpm = bpmEdit?.text.toString().toInt()
-        //stateVm.beats = beatsEdit?.text.toString().toInt()
-
-        /*val entity = MetronomeSettingsEntity(
-            name,
-            stateVm.bpm,
-            stateVm.beats,
-            stateVm.accentStr,
-        )*/
-        //profilesVm.addProfile(entity)
     }
 
     private fun clickListener(entity: MetronomeSettingsEntity, action: PresetsListAdapter.Actions){
@@ -157,15 +134,11 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
                 //profilesVm.deleteProfile(entity)
             }
         }
-
-
-
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         stateVm.removeBeatsObserver(this)
-        bpmEdit = null
         beatsTextView = null
         dividerEdit = null
     }
