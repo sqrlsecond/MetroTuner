@@ -1,6 +1,7 @@
 package ru.makarovda.metrotuner.utility
 
 import androidx.collection.CircularIntArray
+import kotlin.math.abs
 
 class Averager(private val bufferCapacity: Int) {
 
@@ -10,6 +11,10 @@ class Averager(private val bufferCapacity: Int) {
 
 
     fun push(value: Int){
+        if (abs((value.toDouble() - average)/average) > 0.3){
+            cleanBuffer()
+        }
+
         val currentSize = buffer.size() // Текущий размер буфера
 
         if (bufferCapacity > currentSize){
@@ -21,6 +26,7 @@ class Averager(private val bufferCapacity: Int) {
     }
 
     fun cleanBuffer(){
+        average = 0.0
         buffer.clear()
     }
 }

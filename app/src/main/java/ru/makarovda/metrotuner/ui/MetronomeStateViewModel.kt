@@ -46,7 +46,7 @@ class MetronomeStateViewModel: ViewModel() {
     val bpmFlow : StateFlow<Int>
         get() = _bpmFlow
 
-    private val tempCalc = EventIntervalCalculator(10, 6000, 10, viewModelScope) {
+    private val tempCalc = EventIntervalCalculator(10, 6000, 10) {
         setBpmValue(round(6000.0 / it.toDouble()).toInt())
     }
 

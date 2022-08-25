@@ -1,35 +1,30 @@
 package ru.makarovda.metrotuner.utility
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-
 class EventIntervalCalculator(bufferCapacity: Int,
                               private val maxInterval: Int,
-                              private val timeStep: Long = 1,
-                              private val coroutineScope: CoroutineScope,
+                              timeStep: Long = 1,
                               private val intervalHandler: (Int)->Unit) {
 
     private val averager = Averager(bufferCapacity)
     private var isCounting: Boolean = false
-    private var counter: Int = 0
+    private var timeElapsed: Long = 0
+    /// Коэффициент пропорциональности между временем в нс и заданным интервалом в мс
+    private val kp = 1_000_000 * timeStep
 
     //Обработка события для расчёта интервала между двумя событиями
     fun eventHandler() {
         if (!isCounting) {
-            coroutineScope.launch(Dispatchers.Default){
-                isCounting = true
-                while(counter < maxInterval){
-                    delay(timeStep)
-                    counter++
-                }
-                isCounting = false
-                averager.cleanBuffer()
-            }
+            timeElapsed = System.nanoTime() / kp //преобразование наносекунд в единицы интервала, который задаётся в милисекундах
+            isCounting = true
         } else {
-            averager.push(counter)
-            counter = 0
+            val newTime = System.nanoTime() / kp
+            if ((newTime - timeElapsed) >= maxInterval){
+                averager.cleanBuffer()
+                isCounting = false
+                return
+            }
+            averager.push((newTime - timeElapsed).toInt())
+            timeElapsed = newTime
             intervalHandler(averager.average.toInt())
         }
     }
