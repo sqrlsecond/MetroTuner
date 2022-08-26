@@ -1,4 +1,4 @@
-object YINPitchDetection {
+class YINPitchDetection() {
 
     private val timeStep = 1.0F / 44100.0F;
 

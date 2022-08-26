@@ -21,6 +21,7 @@ import ru.makarovda.metrotuner.R
 class TunerFragment(): Fragment() {
 
     private var fragLayout: View? = null
+    private var audioProcessor: AudioSignalProccesor? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +34,7 @@ class TunerFragment(): Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fragLayout = view
+        audioProcessor = AudioSignalProccesor()
         if (ContextCompat.checkSelfPermission(requireContext(),
                 Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             val permissions = arrayOf( android.Manifest.permission.RECORD_AUDIO)
@@ -42,7 +44,7 @@ class TunerFragment(): Fragment() {
 
     override fun onPause() {
         super.onPause()
-        AudioSignalProccesor.actionStop()
+        audioProcessor?.actionStop()
     }
 
     override fun onDestroyView() {
@@ -56,8 +58,8 @@ class TunerFragment(): Fragment() {
         val centsText = fragLayout?.findViewById<TextView>(R.id.centsTextView)
         val pitchMeter = fragLayout?.findViewById<HorizontalPitchMeter>(R.id.horizontalPitchMeter)
         lifecycleScope.launch(Dispatchers.Main){
-            AudioSignalProccesor.actionOn()
-            AudioSignalProccesor.mainFrequency.collect {
+            audioProcessor?.actionOn()
+            audioProcessor?.mainFrequency?.collect {
                 val note = FrequencyNoteConverter.convert(it)
                 noteText?.text = note.nearestNote
                 centsText?.text = note.cents.toString()

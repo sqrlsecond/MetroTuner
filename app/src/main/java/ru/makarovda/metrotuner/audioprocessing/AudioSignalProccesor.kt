@@ -1,9 +1,9 @@
 package ru.makarovda.metrotuner.audioprocessing
 
+import YINPitchDetection
 import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
  * Класс для анализа входящего аудиосигнала. Определение первой гармоники
  */
 
-object AudioSignalProccesor {
+class AudioSignalProccesor() {
 
     /**
      * Частота первой гармоники в сигнале
@@ -44,6 +44,8 @@ object AudioSignalProccesor {
 
     private var _frequencyIntegratorBuffer = DoubleArray(10)
 
+    private val pitchDetector: YINPitchDetection by lazy { YINPitchDetection()}
+
     /**
      * Активировать анализатор
      */
@@ -64,7 +66,7 @@ object AudioSignalProccesor {
             while(actionEnable){
                 recordingResult = _audioRecord?.read(_audioBuffer!!, 0, bufSize!!, AudioRecord.READ_BLOCKING)
                 //Log.d("Recording_res", recordingResult.toString())
-                frequency = YINPitchDetection.detectFrequency(_audioBuffer!!)
+                frequency = pitchDetector.detectFrequency(_audioBuffer!!)
 
                 if (counter >= 10) {
                     counter = 0
@@ -96,7 +98,7 @@ object AudioSignalProccesor {
         val minInternalBufferSize = AudioRecord.getMinBufferSize(
             sampleRate,
             channelConfig, audioFormat)
-        val yinRequiredSamplesCount = YINPitchDetection.getRequiredSamplesCount()
+        val yinRequiredSamplesCount = pitchDetector.getRequiredSamplesCount()
         val internalBufferSize = if (yinRequiredSamplesCount > minInternalBufferSize / 2) yinRequiredSamplesCount else (minInternalBufferSize / 2)
 
         _audioBuffer = ShortArray(internalBufferSize)
