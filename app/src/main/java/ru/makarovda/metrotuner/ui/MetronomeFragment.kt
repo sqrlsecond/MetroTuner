@@ -17,32 +17,36 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.makarovda.metrotuner.R
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
 
     private var counterState: Boolean = false
-    private var counter: Int = 0
+    //private var counter: Int = 0
     private var metronomeStateText: TextView? = null
     private val stateVm: MetronomeStateViewModel by activityViewModels()
     private var mediaPlayer: MediaPlayer? = null
     private var mediaPlayerAccent: MediaPlayer? = null
     private var playPauseBtn:ImageButton? = null
     private var pauseMs: Long = 60_000 / (120.toLong())
-    private var tempoCounterActivated = false
-    private var tempCounter: Int = 0
+    private var timer: Timer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("STARTTIME", System.nanoTime().toString())
         return inflater.inflate(R.layout.fragment_metronome_snd, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        mediaPlayer = MediaPlayer.create(context, R.raw.click)
+        mediaPlayerAccent = MediaPlayer.create(context, R.raw.accent)
+        Log.d("STARTTIME", System.nanoTime().toString())
         // Отображение текущих параметров
         val bpmTextView = view.findViewById<TextView>(R.id.mtrn_bpm_text_view)
         bpmTextView.text = stateVm.bpmFlow.value.toString()
@@ -63,21 +67,35 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
         }
         view.findViewById<TextView>(R.id.accent_text_view).text = getString(R.string.accent_text, accentsArr.joinToString())
 
+
         lifecycleScope.launch(Dispatchers.Main){
             stateVm.bpmFlow.collect {
                 pauseMs = 60_000 / (it.toLong())
                 bpmTextView.text = it.toString()
+                timer?.let {
+                    if(counterState) {
+                        timer?.cancel()
+                        timer = Timer()
+                        timer?.scheduleAtFixedRate(MetronomeTimerTask(),0, pauseMs)
+                    }
+                }
             }
         }
+
         // Запуск/остановка метронома
         playPauseBtn = view.findViewById<ImageButton>(R.id.mtrn_play_pause_btn)
         playPauseBtn?.setOnClickListener {
             counterState = !counterState
             if(counterState){
                 playPauseBtn?.setImageResource(R.drawable.ic_baseline_pause_circle_filled_64)
-                counterLoop()
+                //mediaPlayer = MediaPlayer.create(context, R.raw.click)
+                //mediaPlayerAccent = MediaPlayer.create(context, R.raw.accent)
+
+                timer = Timer()
+                timer?.scheduleAtFixedRate(MetronomeTimerTask(),0, pauseMs)
             } else {
                 playPauseBtn?.setImageResource(R.drawable.ic_baseline_play_circle_filled_64)
+                timer?.cancel()
             }
         }
 
@@ -106,41 +124,6 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
         view.findViewById<Button>(R.id.tap_tempo_button).setOnClickListener {
             stateVm.tempClickHandler()
         }
-
-    }
-
-    private fun counterLoop() {
-
-        mediaPlayer = MediaPlayer.create(context, R.raw.click)
-        mediaPlayerAccent = MediaPlayer.create(context, R.raw.accent)
-
-        counter = 0
-        val beats = stateVm.accents
-        val countMax: Int = beats.size
-        lifecycleScope.launch(Dispatchers.Default){
-            while (counterState){
-                // Обнуление счётчика долей
-                if(counter >= countMax) counter = 0
-                counter++
-        /*        if(counter == 1) {
-                    mediaPlayerAccent?.start()
-                }else {
-                    mediaPlayer?.start()
-                }*/
-                if(beats[counter-1]) {//Сильная доля
-                    mediaPlayerAccent?.start()
-                } else {//Слабая доля
-                    mediaPlayer?.start()
-                }
-                // Отображение текущей доли
-                lifecycleScope.launch(Dispatchers.Main) {
-                    metronomeStateText?.text = counter.toString()
-                }
-                delay(pauseMs)
-            }
-            mediaPlayerAccent?.release()
-            mediaPlayer?.release()
-        }
     }
 
     override fun onPause() {
@@ -148,6 +131,12 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
 
         metronomeStateText?.text = "0"
         counterState = false
+        timer?.cancel()
+        timer = null
+        mediaPlayer?.release()
+        mediaPlayer = null
+        mediaPlayerAccent?.release()
+        mediaPlayerAccent = null
     }
 
     override fun onResume() {
@@ -157,5 +146,26 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
 
     override fun onResult(bpm: Int) {
         stateVm.setBpmValue(bpm)
+    }
+
+    private inner class MetronomeTimerTask(): TimerTask()
+    {
+        private val beats = stateVm.accents
+        private val countMax: Int = beats.size
+        private var counter = 0
+
+        override fun run() {
+            if(counter >= countMax) counter = 0
+            counter++
+            Log.d("METRONOME", System.currentTimeMillis().toString())
+            if(beats[counter-1]) {//Сильная доля
+                mediaPlayerAccent?.start()
+            } else {//Слабая доля
+                mediaPlayer?.start()
+            }
+            lifecycleScope.launch(Dispatchers.Main) {
+                metronomeStateText?.text = counter.toString()
+            }
+        }
     }
 }

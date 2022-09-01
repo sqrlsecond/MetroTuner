@@ -1,5 +1,7 @@
 package ru.makarovda.metrotuner.utility
 
+import kotlin.math.abs
+
 class EventIntervalCalculator(bufferCapacity: Int,
                               private val maxInterval: Int,
                               timeStep: Long = 1,
@@ -14,16 +16,19 @@ class EventIntervalCalculator(bufferCapacity: Int,
     //Обработка события для расчёта интервала между двумя событиями
     fun eventHandler() {
         if (!isCounting) {
-            timeElapsed = System.nanoTime() / kp //преобразование наносекунд в единицы интервала, который задаётся в милисекундах
+            timeElapsed = System.nanoTime() / kp //преобразование наносекунд в единицы интервала, который задаётся в миллисекундах
             isCounting = true
         } else {
             val newTime = System.nanoTime() / kp
-            if ((newTime - timeElapsed) >= maxInterval){
+            val delta = newTime - timeElapsed
+            if (delta >= maxInterval ||
+                (( abs((delta.toDouble() - averager.average) / averager.average) > 0.3) && (abs(averager.average) > 0.1) ) )
+            {
+                timeElapsed = newTime
                 averager.cleanBuffer()
-                isCounting = false
                 return
             }
-            averager.push((newTime - timeElapsed).toInt())
+            averager.push(delta.toInt())
             timeElapsed = newTime
             intervalHandler(averager.average.toInt())
         }

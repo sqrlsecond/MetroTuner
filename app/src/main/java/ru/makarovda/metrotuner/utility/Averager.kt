@@ -11,9 +11,6 @@ class Averager(private val bufferCapacity: Int) {
 
 
     fun push(value: Int){
-        if (abs((value.toDouble() - average)/average) > 0.3){
-            cleanBuffer()
-        }
 
         val currentSize = buffer.size() // Текущий размер буфера
 
