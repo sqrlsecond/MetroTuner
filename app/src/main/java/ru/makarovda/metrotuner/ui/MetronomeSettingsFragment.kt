@@ -88,11 +88,11 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
 
         recView.layoutManager = LinearLayoutManager(requireContext())*/
 
-        view.findViewById<Button>(R.id.save_preset_btn).setOnClickListener {
+        /*view.findViewById<Button>(R.id.save_preset_btn).setOnClickListener {
             EnterPresetNameDialog().apply {
                 setResultListener(this@MetronomeSettingsFragment)
             }.show(parentFragmentManager, "save Dialog")
-        }
+        }*/
 
         view.findViewById<Toolbar>(R.id.toolbar).setNavigationOnClickListener {
             findNavController().popBackStack()
