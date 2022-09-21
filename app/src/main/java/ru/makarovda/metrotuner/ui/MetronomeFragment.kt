@@ -1,9 +1,12 @@
 package ru.makarovda.metrotuner.ui
 
+import android.graphics.Paint
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.media.SoundPool
 import android.os.Bundle
+import android.text.Html
+import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -78,7 +81,10 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
             }
             dialogSetBpm.show(parentFragmentManager, "Enter BPM")
         }
-        view.findViewById<TextView>(R.id.beats_text_view).text = getString(R.string.beats_text, stateVm.beats)
+        /*val beatsTextView = view.findViewById<TextView>(R.id.beats_text_view)
+        beatsTextView.paintFlags = beatsTextView.paintFlags or Paint.UNDERLINE_TEXT_FLAG*/
+
+        view.findViewById<TextView>(R.id.beats_text_view).text = Html.fromHtml(getString(R.string.beats_text, stateVm.beats), FROM_HTML_MODE_LEGACY)
         // Отображение сильных долей в такте
         val accentsArr = ArrayList<String>()
         for ((index, value) in stateVm.accents.iterator().withIndex()){
@@ -86,7 +92,7 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
                 accentsArr.add((index + 1).toString())
             }
         }
-        view.findViewById<TextView>(R.id.accent_text_view).text = getString(R.string.accent_text, accentsArr.joinToString())
+        view.findViewById<TextView>(R.id.accent_text_view).text = Html.fromHtml(getString(R.string.accent_text, accentsArr.joinToString()), FROM_HTML_MODE_LEGACY)
 
 
         lifecycleScope.launch(Dispatchers.Main){

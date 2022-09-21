@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/metronome_start"
-        android:textSize="20pt"
+        android:textSize="48sp"
         app:layout_constraintBottom_toTopOf="@id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
     <LinearLayout
         android:id="@+id/metronome_bpm"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,14 +44,16 @@
             android:id="@+id/mtrn_bpm_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="@string/bpm_text"
 
-            android:textSize="12pt" />
+            android:textSize="32sp" />
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="32dp"
             android:layout_gravity="center"
+
             android:src="@drawable/ic_baseline_border_color_24" />
 
     </LinearLayout>
@@ -95,7 +97,8 @@
     <LinearLayout
         android:id="@+id/beats_settings_linear_layout"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
         android:layout_marginTop="16dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -106,15 +109,16 @@
             android:id="@+id/beats_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:text="@string/beats_text"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/accent_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/accent_text"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <ImageButton

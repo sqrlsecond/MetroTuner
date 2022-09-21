@@ -8,7 +8,7 @@
     <EditText
         android:id="@+id/set_bpm_dialog_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="48dp"
         android:inputType="number"
         android:hint="Enter bpm" />
 
