@@ -17,6 +17,7 @@
         android:id="@+id/acc_item_color_view"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:contentDescription="Accent activate"
 
         android:layout_margin="8dp"
         android:layout_marginTop="8dp"
