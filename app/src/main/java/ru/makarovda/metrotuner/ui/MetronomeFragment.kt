@@ -57,8 +57,8 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
         //mediaPlayerAccent = MediaPlayer.create(context, R.raw.accent)
 
         val audioAttrib = AudioAttributes.Builder()
-            .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
-            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .setUsage(AudioAttributes.USAGE_MEDIA)
+            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
             .build()
 
         soundPool = SoundPool.Builder()
@@ -188,10 +188,10 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
                 //Log.d("METRONOME", (System.nanoTime() / 1_000_000).toString())
                 if(beats[counter-1]) {//Сильная доля
                     //mediaPlayerAccent?.start()
-                    soundPool?.play(accentSoundId, 0.5f, 0.5f, 0, 0, 1.0f)
+                    soundPool?.play(accentSoundId, 1.0f, 1.0f, 0, 0, 1.0f)
                 } else {//Слабая доля
                 //mediaPlayer?.start()
-                    soundPool?.play(clickSoundId, 0.5f, 0.5f, 1, 0, 1.0f)
+                    soundPool?.play(clickSoundId, 1.0f, 1.0f, 1, 0, 1.0f)
                 }
                 metronomeStateText?.text = counter.toString()
             }

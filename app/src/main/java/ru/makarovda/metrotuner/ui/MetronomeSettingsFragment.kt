@@ -18,6 +18,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -56,7 +57,10 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
                                                 stateVm::changeAccent)
         view.findViewById<RecyclerView>(R.id.accents_list).apply {
             adapter = accentsAdapter
-            layoutManager = GridLayoutManager(context, 4)
+            //layoutManager = GridLayoutManager(context, 4)
+            /*layoutManager = LinearLayoutManager(context).apply {
+                scroll
+            }*/
             //layoutManager = LinearLayoutManager(context)
         }
 
