@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginBottom="12dp">
 
     <TextView
         android:id="@+id/acc_item_number_text"
@@ -19,8 +20,8 @@
         android:layout_height="48dp"
         android:contentDescription="Accent activate"
 
-        android:layout_margin="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="4dp"
         android:background="@color/blue_800"
         />
 </LinearLayout>

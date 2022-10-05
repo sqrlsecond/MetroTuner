@@ -57,19 +57,12 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
                                                 stateVm::changeAccent)
         view.findViewById<RecyclerView>(R.id.accents_list).apply {
             adapter = accentsAdapter
-            //layoutManager = GridLayoutManager(context, 4)
-            /*layoutManager = LinearLayoutManager(context).apply {
-                scroll
-            }*/
-            //layoutManager = LinearLayoutManager(context)
+            layoutManager = GridLayoutManager(context, 4)
         }
 
+        beatsTextView = view.findViewById<TextView>(R.id.beats_count_text)
 
-
-         beatsTextView = view.findViewById<TextView>(R.id.beats_count_text)
-
-
-          beatsTextView?.text = stateVm.beats.toString()
+        beatsTextView?.text = stateVm.beats.toString()
 
         //Подтверждение новых настроек
         view.findViewById<Button>(R.id.settings_confirm_btn).setOnClickListener {
@@ -124,7 +117,7 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
 
     }
 
-    private fun clickListener(entity: MetronomeSettingsEntity, action: PresetsListAdapter.Actions){
+    /*private fun clickListener(entity: MetronomeSettingsEntity, action: PresetsListAdapter.Actions){
 
         when(action){
             PresetsListAdapter.Actions.CHOOSE -> {
@@ -138,7 +131,7 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
                 //profilesVm.deleteProfile(entity)
             }
         }
-    }
+    }*/
 
     override fun onDestroyView() {
         super.onDestroyView()
