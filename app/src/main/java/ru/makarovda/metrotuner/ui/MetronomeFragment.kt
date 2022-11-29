@@ -8,9 +8,7 @@ import android.os.Bundle
 import android.text.Html
 import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -115,6 +113,7 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
             counterState = !counterState
             if(counterState){
                 playPauseBtn?.setImageResource(R.drawable.ic_baseline_pause_circle_filled_64)
+                requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 //mediaPlayer = MediaPlayer.create(context, R.raw.click)
                 //mediaPlayerAccent = MediaPlayer.create(context, R.raw.accent)
 
@@ -123,6 +122,7 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
             } else {
                 playPauseBtn?.setImageResource(R.drawable.ic_baseline_play_circle_filled_64)
                 timer?.cancel()
+                requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             }
         }
 

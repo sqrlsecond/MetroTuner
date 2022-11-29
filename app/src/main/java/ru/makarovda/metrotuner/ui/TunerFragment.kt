@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -45,6 +46,7 @@ class TunerFragment(): Fragment() {
     override fun onPause() {
         super.onPause()
         audioProcessor?.actionStop()
+        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     override fun onDestroyView() {
@@ -57,6 +59,7 @@ class TunerFragment(): Fragment() {
         val noteText = fragLayout?.findViewById<TextView>(R.id.noteTextView)
         val centsText = fragLayout?.findViewById<TextView>(R.id.centsTextView)
         val pitchMeter = fragLayout?.findViewById<HorizontalPitchMeter>(R.id.horizontalPitchMeter)
+        requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         lifecycleScope.launch(Dispatchers.Main){
             audioProcessor?.actionOn()
             audioProcessor?.mainFrequency?.collect {
