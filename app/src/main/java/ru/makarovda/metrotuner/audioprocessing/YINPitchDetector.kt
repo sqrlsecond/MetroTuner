@@ -1,8 +1,10 @@
+import android.util.Log
+
 class YINPitchDetection() {
 
     private val timeStep = 1.0F / 44100.0F;
 
-    private val windowSize : Int = (0.025 / timeStep).toInt() //integration window 25 ms
+    private val windowSize : Int = (0.1 / timeStep).toInt() //integration window 100 ms
 
     private val maxLag = (44100.0 / 50.0).toInt(); // 50 Hz - the lowest frequency
 
@@ -15,6 +17,10 @@ class YINPitchDetection() {
      */
     public fun detectFrequency(signal : ShortArray): Double {
 
+        //Log.d("Tuner", signal.maxOrNull().toString())
+        if(signal.maxOrNull()!! < 300){
+            return 0.0
+        }
         if (signal.size < maxLag + windowSize) {
             return 0.0
         }
@@ -25,8 +31,9 @@ class YINPitchDetection() {
         if (firstMinIndex < 1){
             return 0.0
         }
-        val frequencyPeak = 1 / (timeStep * parabolicInterpolation(findFirstLocalMinIndex()))
+        //val frequencyPeak = 1 / (timeStep * parabolicInterpolation(findFirstLocalMinIndex()))
         //val frequencyPeak = 1 / (timeStep * findFirstLocalMinIndex().toDouble())
+        val frequencyPeak = 44100.0 / parabolicInterpolation(firstMinIndex)
         return frequencyPeak
     }
     
@@ -35,13 +42,14 @@ class YINPitchDetection() {
      */
     private fun diffFunc(signal : ShortArray){
         var sum = 0.0
-        var difference = 0.0
+        var difference = 0
         for (tau in diffFuncData.indices) {
             sum = 0.0
-            difference = 0.0
-            for (j in 0..windowSize){
-                difference = (signal[j] - signal[j + tau]).toDouble() / 65535
-                sum += difference * difference
+            //difference = 0.0
+            for (j in 0 until signal.size / 2){
+                //difference = (signal[j] - signal[j + tau]).toDouble() / 65535
+                difference = (signal[j] - signal[j + tau])
+                sum += (difference * difference).toDouble()
             }
             diffFuncData[tau] = sum
         }
@@ -53,27 +61,24 @@ class YINPitchDetection() {
     private fun cmndf() {
         var sum:Double = 0.0
         for (tau in 1..(cmndfData.size - 1)) {
-            sum = 0.0
-            for (j in 0..tau){ // tau max
-                sum += diffFuncData[j]
-            }
-            cmndfData[tau] = diffFuncData[tau].toDouble() / ((1/tau.toDouble()) * sum)
+            //for (j in 0..tau){ // tau max
+            //    sum += diffFuncData[j]
+            //}
+            //cmndfData[tau] = diffFuncData[tau].toDouble() / ((1/tau.toDouble()) * sum)
+            sum += diffFuncData[tau]
+            cmndfData[tau] = tau * diffFuncData[tau] / sum
         }
     }
 
     private fun findFirstLocalMinIndex(): Int {
-        var counter = 0
-        while ((cmndfData[counter] > 0.3) && (counter < cmndfData.size - 1)){//threshold
-            counter++
+        for (i in 1..cmndfData.size - 2) {
+            if (cmndfData[i] < 0.31) {
+                if ((cmndfData[i] < cmndfData[i - 1]) && (cmndfData[i] < cmndfData[i+1])){
+                    return i;
+                }
+            }
         }
-        //no minimal extremum in function
-        if(counter >= cmndfData.size - 2){
-            return 0
-        }
-        while ((cmndfData[counter] >= cmndfData[counter + 1]) && (counter < cmndfData.size - 2)){
-            counter++
-        }
-        return counter
+        return 0
     }
 
     private fun parabolicInterpolation(index: Int): Double {

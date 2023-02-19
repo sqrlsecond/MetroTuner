@@ -26,7 +26,7 @@ class MetronomeSettingsVM(private val repository: MetronomeSettingsRepository): 
     }
 }
 
-class MetronomeSettingsVMFactory(private val repository: MetronomeSettingsRepository) : ViewModelProvider.Factory
+/*class MetronomeSettingsVMFactory(private val repository: MetronomeSettingsRepository) : ViewModelProvider.Factory
 {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -36,4 +36,4 @@ class MetronomeSettingsVMFactory(private val repository: MetronomeSettingsReposi
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-}
+}*/

@@ -16,7 +16,7 @@ object FrequencyNoteConverter{
         //Октава определяется неверно
         //val octaveNumber = 4 + (semitonesCount / 12).toInt()
 
-        val sign = if (semitonesCount > 0) -1 else 1
+        val sign = if (semitonesCount < 0) -1 else 1
 
         var index = round(semitonesCount % 12).toInt()
         if (index < 0) {

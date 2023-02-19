@@ -6,6 +6,7 @@ import android.media.AudioRecord
 import android.media.MediaRecorder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -68,7 +69,7 @@ class AudioSignalProccesor() {
                 //Log.d("Recording_res", recordingResult.toString())
                 frequency = pitchDetector.detectFrequency(_audioBuffer!!)
 
-                if (counter >= 10) {
+                /*if (counter >= 10) {
                     counter = 0
                     _mainFrequency.value = _frequencyIntegratorBuffer.sum()
                     continue
@@ -76,7 +77,12 @@ class AudioSignalProccesor() {
                 if(frequency >= 50.0) {
                     _frequencyIntegratorBuffer[counter] = frequency * 0.1
                     counter++
+                }*/
+
+                if(frequency >= 50.0) {
+                    _mainFrequency.value = frequency
                 }
+                delay(200)
             }
         }
     }
