@@ -4,6 +4,7 @@ import YINPitchDetection
 import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -82,7 +83,7 @@ class AudioSignalProccesor() {
                 if(frequency >= 50.0) {
                     _mainFrequency.value = frequency
                 }
-                delay(200)
+                delay(500)
             }
         }
     }
@@ -104,9 +105,12 @@ class AudioSignalProccesor() {
         val minInternalBufferSize = AudioRecord.getMinBufferSize(
             sampleRate,
             channelConfig, audioFormat)
-        val yinRequiredSamplesCount = pitchDetector.getRequiredSamplesCount()
+        val yinRequiredSamplesCount = pitchDetector.getRequiredSamplesCount() * 3
         val internalBufferSize = if (yinRequiredSamplesCount > minInternalBufferSize / 2) yinRequiredSamplesCount else (minInternalBufferSize / 2)
 
+
+        Log.d("jopa", yinRequiredSamplesCount.toString())
+        Log.d("jopa", (minInternalBufferSize / 2).toString())
         _audioBuffer = ShortArray(internalBufferSize)
 
         /*Log.d(

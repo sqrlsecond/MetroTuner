@@ -46,7 +46,7 @@ class PitchTest {
 
                 val calculatedFreq = detector.detectFrequency(audioSignal) * 2
                 println(calculatedFreq)
-                assertEquals(targetFrequency, calculatedFreq.toFloat(), 0.05f * targetFrequency)
+                assertEquals(targetFrequency, calculatedFreq.toFloat(), 0.005f * targetFrequency)
             }
 
         }
@@ -81,7 +81,7 @@ class PitchTest {
 
         val detector = YINPitchDetection()
 
-        val arrSize = detector.getRequiredSamplesCount()
+        val arrSize = detector.getRequiredSamplesCount() * 2
 
         val audioSignal = ShortArray(arrSize)
 
@@ -97,7 +97,7 @@ class PitchTest {
         val calculatedFreq = detector.detectFrequency(audioSignal)
         print(calculatedFreq)
 
-        assertEquals(freq, calculatedFreq, 0.01 * freq)
+        assertEquals(freq, calculatedFreq, 0.004 * freq)
 
     }
 
