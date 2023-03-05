@@ -151,6 +151,10 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
         view.findViewById<Button>(R.id.tap_tempo_button).setOnClickListener {
             stateVm.tempClickHandler()
         }
+
+        view.findViewById<TextView>(R.id.tempo_text_view).setOnClickListener {
+            findNavController().navigate(R.id.temposFragment)
+        }
     }
 
     override fun onPause() {

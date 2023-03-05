@@ -11,9 +11,16 @@
         <action
             android:id="@+id/action_fragmentVP_to_metronomeSettingsFragment"
             app:destination="@id/metronomeSettingsFragment" />
+        <action
+            android:id="@+id/action_fragmentVP_to_temposFragment"
+            app:destination="@id/temposFragment" />
     </fragment>
     <fragment
         android:id="@+id/metronomeSettingsFragment"
         android:name="ru.makarovda.metrotuner.ui.MetronomeSettingsFragment"
         android:label="MetronomeSettingsFragment" />
+    <fragment
+        android:id="@+id/temposFragment"
+        android:name="ru.makarovda.metrotuner.ui.TemposFragment"
+        android:label="TemposFragment" />
 </navigation>

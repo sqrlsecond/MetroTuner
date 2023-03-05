@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MetroTuner</string>
     <string name="placeholder">Just text</string>
@@ -23,4 +24,5 @@
     <string name="pls_1_bpm_btn_text">+1</string>
     <string name="pls_5_bpm_btn_text">+5</string>
     <string name="accent_text">accent: &lt;u>%1$s&lt;/u></string>
+    <string name="tempo_bpm_text">&#119135; = %1$d</string>
 </resources>

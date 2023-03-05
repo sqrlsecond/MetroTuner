@@ -58,6 +58,8 @@
 
     </LinearLayout>
 
+
+
     <Button
         android:id="@+id/min_5_bpm_btn"
         style="@style/MetronomeButton"
@@ -120,6 +122,19 @@
             android:text="@string/accent_text"
             android:textSize="20sp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tempo_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="123"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/beats_settings_linear_layout"
+        app:layout_constraintTop_toTopOf="@id/beats_settings_linear_layout"
+        app:layout_constraintBottom_toBottomOf="@id/beats_settings_linear_layout"
+        />
+
+
 
     <ImageButton
         android:id="@+id/mtrn_play_pause_btn"
