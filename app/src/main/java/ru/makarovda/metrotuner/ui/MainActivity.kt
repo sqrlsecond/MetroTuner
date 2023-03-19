@@ -1,5 +1,6 @@
 package ru.makarovda.metrotuner.ui
 
+import FrequencyNoteConverter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -12,6 +13,8 @@ class MainActivity : AppCompatActivity() {
     private val metronomeBeatsStr = "Beats"
     private val metronomeStateViewModel: MetronomeStateViewModel by viewModels()
 
+    private val tunerA4FreqStr = "A4Freq"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -23,6 +26,7 @@ class MainActivity : AppCompatActivity() {
                         it
                     )
                 }
+                FrequencyNoteConverter.laFreq = getInt(tunerA4FreqStr, 440)
             }
         }
 
@@ -35,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         getSharedPreferences(metronomeStateSettings, MODE_PRIVATE).edit().apply {
             putInt(metronomeBpmStr, metronomeStateViewModel.bpmFlow.value)
             putString(metronomeBeatsStr, metronomeStateViewModel.accentStr)
+            putInt(tunerA4FreqStr, FrequencyNoteConverter.laFreq)
             apply()
         }
     }

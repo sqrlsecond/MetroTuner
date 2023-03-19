@@ -100,10 +100,11 @@
         android:id="@+id/beats_settings_linear_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="48dp"
         android:layout_marginTop="16dp"
+        android:minHeight="48dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -127,7 +128,8 @@
         android:id="@+id/tempo_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="123"
+        android:text="@string/metronome_tempo_text"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/beats_settings_linear_layout"
         app:layout_constraintTop_toTopOf="@id/beats_settings_linear_layout"

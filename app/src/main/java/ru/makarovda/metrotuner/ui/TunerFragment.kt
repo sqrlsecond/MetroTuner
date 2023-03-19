@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Button
+import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -41,6 +43,21 @@ class TunerFragment(): Fragment() {
             val permissions = arrayOf( android.Manifest.permission.RECORD_AUDIO)
             ActivityCompat.requestPermissions(requireActivity(), permissions,0)
         }
+        val freqA4TextView = view.findViewById<TextView>(R.id.a4_freq_textView)
+        freqA4TextView.text = String.format("%d Hz", FrequencyNoteConverter.laFreq)
+
+        view.findViewById<Button>(R.id.freq_inc_btn)
+            .setOnClickListener{
+                FrequencyNoteConverter.laFreq++
+                freqA4TextView.text = String.format("%d Hz", FrequencyNoteConverter.laFreq)
+            }
+
+        view.findViewById<Button>(R.id.freq_dec_btn)
+            .setOnClickListener{
+                FrequencyNoteConverter.laFreq--
+                freqA4TextView.text = String.format("%d Hz", FrequencyNoteConverter.laFreq)
+            }
+
     }
 
     override fun onPause() {

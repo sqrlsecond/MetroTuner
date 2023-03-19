@@ -1,5 +1,7 @@
 package ru.makarovda.metrotuner.tempos
 
+import kotlin.math.floor
+
 object Tempos {
 
     data class Tempo(val name: String, val min: Int, val max: Int)
@@ -13,7 +15,7 @@ object Tempos {
         add(Tempo("Adagio", 61,72))
         add(Tempo("Adagietto", 73, 80))
         //add(Tempo("Andantino", 81, 84))
-        add(Tempo("Andante", 86, 96))
+        add(Tempo("Andante", 81, 96))
         //add(Tempo("Andante moderato", 91, 96))
         add(Tempo("Moderato", 97, 108))
         //add(Tempo("Allegro moderato", 109, 112))
@@ -28,15 +30,30 @@ object Tempos {
     val temposCount = tempos.size
 
     fun getTempoName(bpm: Int): String{
-        if((bpm < tempos[0].min) || (bpm > tempos.last().max)) {
+        if(bpm < tempos[0].min) {
             return "No Tempo"
         }
 
-        return tempos[binarySearch(bpm,0, tempos.lastIndex)].name
+        if(bpm >= tempos.last().max) {
+            return tempos.last().name
+        }
 
+        binarySearch(bpm,0, tempos.lastIndex)?.let {
+            return tempos[it].name
+        }
+        print(bpm)
+        return "No Tempo"
     }
 
-    private fun binarySearch(bpm: Int, low: Int, high: Int): Int{
+    private fun binarySearch(bpm: Int, low: Int, high: Int): Int?{
+        if (low >= high) return null
+        if (high - low == 1) {
+            if(bpm >= tempos[high].min) return high
+            if(bpm <= tempos[low].max) return low
+            return null
+        }
+        //println("low=$low")
+        //println("high=$high")
         val mid = (low + high) / 2
 
         if(bpm < tempos[mid].min) {

@@ -6,11 +6,18 @@ object FrequencyNoteConverter{
 
     val noteLiterals = listOf("A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G","G#")
 
+    var laFreq = 440
+        set(value) {
+            if ((value >= 420) && (value <= 460)){
+                field = value
+            }
+        }
+
     fun convert(frequency: Double): NoteMus{
         if ((frequency <= 54.0) || (frequency >= 3500)){
             return NoteMus(noteLiterals[0], 0)
         }
-        val semitonesCount = 12 * log2(frequency / 440.0)
+        val semitonesCount = 12 * log2(frequency / laFreq)
 
         //Из-за особенностей спектра звуков музыкальных инструментов
         //Октава определяется неверно

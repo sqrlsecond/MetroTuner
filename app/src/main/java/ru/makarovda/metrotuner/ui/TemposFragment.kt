@@ -43,7 +43,7 @@ class TemposFragment: Fragment() {
 
         val slider = view.findViewById<VerticalSlider>(R.id.verticalSlider)
 
-        slider?.initializeConverter(1.0f, 200.0f)
+        slider?.initializeConverter(1.0f, 250.0f)
 
         slider?.labels = temposUiMap
         val bpmTV = view.findViewById<TextView>(R.id.tempo_bpm_text_view)
@@ -52,7 +52,9 @@ class TemposFragment: Fragment() {
         slider?.valueChangeHandler = {
             bpmTV?.text = getString(R.string.tempo_bpm_text, it.toInt())
         }
-        slider?.setSliderPosition(stateVm.bpmFlow.value.toFloat())
+        var sliderInitPos = stateVm.bpmFlow.value.toFloat()
+            //if (sliderInitPos > 200.0f) sliderInitPos = 200.0f
+        slider?.setSliderPosition(sliderInitPos)
 
         view.findViewById<Toolbar>(R.id.tempos_toolbar).setNavigationOnClickListener {
             stateVm.setBpmValue(slider?.getSliderPos()?.toInt() ?: stateVm.bpmFlow.value)

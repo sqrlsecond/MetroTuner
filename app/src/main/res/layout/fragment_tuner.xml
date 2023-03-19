@@ -10,11 +10,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/placeholder"
+        android:textSize="48sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textSize="48sp"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/centsTextView"
@@ -33,5 +34,53 @@
         app:layout_constraintBottom_toTopOf="@+id/noteTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/freq_dec_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/a4_dec_text"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/a4_freq_textView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.803" />
+
+    <TextView
+        android:id="@+id/a4_freq_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="440 Hz"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/freq_dec_btn"
+        app:layout_constraintEnd_toStartOf="@+id/freq_inc_btn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/freq_dec_btn"
+        app:layout_constraintTop_toTopOf="@+id/freq_dec_btn" />
+
+    <Button
+        android:id="@+id/freq_inc_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/a4_inc_text"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/freq_dec_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/a4_freq_textView"
+        app:layout_constraintTop_toTopOf="@+id/freq_dec_btn" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="A4:"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/freq_dec_btn"
+        app:layout_constraintStart_toStartOf="@+id/freq_dec_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

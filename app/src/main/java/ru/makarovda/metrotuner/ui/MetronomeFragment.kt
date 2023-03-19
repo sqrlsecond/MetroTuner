@@ -21,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.makarovda.metrotuner.R
+import ru.makarovda.metrotuner.tempos.Tempos
 import java.util.*
 
 
@@ -38,6 +39,7 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
     private var soundPool: SoundPool? = null
     private var accentSoundId: Int = 0
     private var clickSoundId: Int = 0
+
 
 
     override fun onCreateView(
@@ -92,6 +94,8 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
         }
         view.findViewById<TextView>(R.id.accent_text_view).text = Html.fromHtml(getString(R.string.accent_text, accentsArr.joinToString()), FROM_HTML_MODE_LEGACY)
 
+        val tempoTextView = view.findViewById<TextView>(R.id.tempo_text_view)
+        tempoTextView.text =  Html.fromHtml(getString(R.string.metronome_tempo_text, Tempos.getTempoName(stateVm.bpmFlow.value)), FROM_HTML_MODE_LEGACY)
 
         lifecycleScope.launch(Dispatchers.Main){
             stateVm.bpmFlow.collect {
@@ -104,6 +108,7 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
                         timer?.scheduleAtFixedRate(MetronomeTimerTask(),0, pauseMs)
                     }
                 }
+                tempoTextView.text =  Html.fromHtml(getString(R.string.metronome_tempo_text, Tempos.getTempoName(stateVm.bpmFlow.value)), FROM_HTML_MODE_LEGACY)
             }
         }
 
