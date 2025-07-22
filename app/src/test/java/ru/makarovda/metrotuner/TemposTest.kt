@@ -1,7 +1,7 @@
 package ru.makarovda.metrotuner
 
 import org.junit.Test
-import ru.makarovda.metrotuner.tempos.Tempos
+import ru.makarovda.metrotuner.domain.metronome.Tempos
 import org.junit.Assert.*
 class TemposTest {
     @Test

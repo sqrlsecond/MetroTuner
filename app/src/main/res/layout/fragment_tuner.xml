@@ -26,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/noteTextView" />
 
-    <ru.makarovda.metrotuner.ui.HorizontalPitchMeter
+    <ru.makarovda.metrotuner.ui.tuner.HorizontalPitchMeter
         android:id="@+id/horizontalPitchMeter"
         android:layout_width="wrap_content"
         android:layout_height="100dp"

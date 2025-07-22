@@ -1,4 +1,4 @@
-package ru.makarovda.metrotuner.ui
+package ru.makarovda.metrotuner.ui.metronome
 
 
 import android.app.Dialog

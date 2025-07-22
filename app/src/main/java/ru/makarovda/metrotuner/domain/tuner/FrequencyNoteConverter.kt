@@ -1,3 +1,5 @@
+package ru.makarovda.metrotuner.domain.tuner
+
 import kotlin.math.abs
 import kotlin.math.log2
 import kotlin.math.round
@@ -13,7 +15,7 @@ object FrequencyNoteConverter{
             }
         }
 
-    fun convert(frequency: Double): NoteMus{
+    fun convert(frequency: Double): NoteMus {
         if ((frequency <= 54.0) || (frequency >= 3500)){
             return NoteMus(noteLiterals[0], 0)
         }

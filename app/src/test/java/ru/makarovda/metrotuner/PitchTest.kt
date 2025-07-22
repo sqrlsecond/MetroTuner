@@ -1,6 +1,6 @@
 package ru.makarovda.metrotuner
 
-import YINPitchDetection
+import ru.makarovda.metrotuner.domain.tuner.YINPitchDetection
 import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Test

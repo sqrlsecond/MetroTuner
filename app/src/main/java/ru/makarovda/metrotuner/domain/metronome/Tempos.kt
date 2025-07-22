@@ -1,6 +1,4 @@
-package ru.makarovda.metrotuner.tempos
-
-import kotlin.math.floor
+package ru.makarovda.metrotuner.domain.metronome
 
 object Tempos {
 

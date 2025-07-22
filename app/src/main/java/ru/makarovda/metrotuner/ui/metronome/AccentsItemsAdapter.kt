@@ -1,9 +1,10 @@
-package ru.makarovda.metrotuner.ui
+package ru.makarovda.metrotuner.ui.metronome
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.makarovda.metrotuner.R
 
@@ -49,5 +50,31 @@ class AccentsItemsAdapter(var accentsPattern: List<Boolean>,
 
     override fun getItemCount(): Int {
         return accentsPattern.size
+    }
+
+    fun submitNewList(newList: List<Boolean>) {
+        val oldList = accentsPattern
+        accentsPattern = newList
+        DiffUtil.calculateDiff(
+            DiffUtilCallback(oldList, newList)
+        ).dispatchUpdatesTo(this)
+    }
+
+    class DiffUtilCallback(
+        val oldList: List<Boolean>,
+        val newList: List<Boolean>
+    ): DiffUtil.Callback() {
+        override fun getOldListSize(): Int = oldList.size
+
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areItemsTheSame(p0: Int, p1: Int): Boolean {
+            return ((p0 == p1) && (oldList[p0] == newList[p1]))
+        }
+
+        override fun areContentsTheSame(p0: Int, p1: Int): Boolean {
+            return ((p0 == p1) && (oldList[p0] == newList[p1]))
+        }
+
     }
 }

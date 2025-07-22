@@ -1,10 +1,12 @@
 package ru.makarovda.metrotuner.ui
 
-import FrequencyNoteConverter
+import ru.makarovda.metrotuner.domain.tuner.FrequencyNoteConverter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import ru.makarovda.metrotuner.viewmodels.MetronomeStateViewModel
 import ru.makarovda.metrotuner.R
+import ru.makarovda.metrotuner.data.MetronomeBeats
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,16 +22,13 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) { // Первое включение приложения
             getSharedPreferences(metronomeStateSettings, MODE_PRIVATE).apply {
-                metronomeStateViewModel.setBpmValue(getInt(metronomeBpmStr, 120))
-                getString(metronomeBeatsStr, "Xxxx")?.let {
-                    metronomeStateViewModel.beatsFromString(
-                        it
-                    )
-                }
+                val bpm = getInt(metronomeBpmStr, 120)
+                val beatsStr = getString(metronomeBeatsStr, "Xxxx")
+                metronomeStateViewModel.setSettings(bpm, beatsStr ?: "Xxxx")
                 FrequencyNoteConverter.laFreq = getInt(tunerA4FreqStr, 440)
+
             }
         }
-
         setContentView(R.layout.activity_main)
     }
 
@@ -37,8 +36,12 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
         // Сохранение настроек в постоянную память
         getSharedPreferences(metronomeStateSettings, MODE_PRIVATE).edit().apply {
-            putInt(metronomeBpmStr, metronomeStateViewModel.bpmFlow.value)
-            putString(metronomeBeatsStr, metronomeStateViewModel.accentStr)
+            putInt(metronomeBpmStr, metronomeStateViewModel.metronomeStateLD.value!!.bpm)
+            putString(
+                metronomeBeatsStr,
+                MetronomeBeats.convertListToString(
+                    metronomeStateViewModel.metronomeStateLD.value!!.beats
+                ))
             putInt(tunerA4FreqStr, FrequencyNoteConverter.laFreq)
             apply()
         }

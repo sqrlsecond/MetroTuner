@@ -1,5 +1,5 @@
-import android.util.Log
-import ru.makarovda.metrotuner.utility.Averager
+package ru.makarovda.metrotuner.domain.tuner
+
 import kotlin.math.abs
 import kotlin.math.PI
 

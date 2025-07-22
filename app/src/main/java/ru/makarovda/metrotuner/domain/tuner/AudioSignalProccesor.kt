@@ -1,6 +1,5 @@
-package ru.makarovda.metrotuner.audioprocessing
+package ru.makarovda.metrotuner.domain.tuner
 
-import YINPitchDetection
 import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
@@ -46,7 +45,7 @@ class AudioSignalProccesor() {
 
     private var _frequencyIntegratorBuffer = DoubleArray(10)
 
-    private val pitchDetector: YINPitchDetection by lazy { YINPitchDetection()}
+    private val pitchDetector: YINPitchDetection by lazy { YINPitchDetection() }
 
     /**
      * Активировать анализатор
@@ -63,7 +62,7 @@ class AudioSignalProccesor() {
         var recordingResult: Int? = 0
 
         GlobalScope.launch(Dispatchers.Default){
-            _audioRecord?.startRecording();
+            _audioRecord?.startRecording()
             //flag = true
             while(actionEnable){
                 recordingResult = _audioRecord?.read(_audioBuffer!!, 0, bufSize!!, AudioRecord.READ_BLOCKING)

@@ -1,7 +1,6 @@
-package ru.makarovda.metrotuner.ui
+package ru.makarovda.metrotuner.ui.metronome
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import ru.makarovda.metrotuner.R
-import ru.makarovda.metrotuner.tempos.Tempos
+import ru.makarovda.metrotuner.domain.metronome.Tempos
+import ru.makarovda.metrotuner.viewmodels.MetronomeStateViewModel
 
 class TemposFragment: Fragment() {
 
@@ -43,26 +43,24 @@ class TemposFragment: Fragment() {
 
         val slider = view.findViewById<VerticalSlider>(R.id.verticalSlider)
 
-        slider?.initializeConverter(1.0f, 250.0f)
+        slider.initializeConverter(1.0f, 250.0f)
 
-        slider?.labels = temposUiMap
+        slider.labels = temposUiMap
         val bpmTV = view.findViewById<TextView>(R.id.tempo_bpm_text_view)
-        bpmTV?.text = getString(R.string.tempo_bpm_text, stateVm.bpmFlow.value)
+        bpmTV.text = getString(R.string.tempo_bpm_text, stateVm.metronomeStateLD.value!!.bpm)
 
-        slider?.valueChangeHandler = {
-            bpmTV?.text = getString(R.string.tempo_bpm_text, it.toInt())
+        slider.valueChangeHandler = {
+            bpmTV.text = getString(R.string.tempo_bpm_text, it.toInt())
         }
-        var sliderInitPos = stateVm.bpmFlow.value.toFloat()
-            //if (sliderInitPos > 200.0f) sliderInitPos = 200.0f
-        slider?.setSliderPosition(sliderInitPos)
+        slider?.setSliderPosition(stateVm.metronomeStateLD.value!!.bpm.toFloat())
 
         view.findViewById<Toolbar>(R.id.tempos_toolbar).setNavigationOnClickListener {
-            stateVm.setBpmValue(slider?.getSliderPos()?.toInt() ?: stateVm.bpmFlow.value)
+            stateVm.setBpmValue(slider?.getSliderPos()?.toInt() ?: stateVm.metronomeStateLD.value!!.bpm)
             findNavController().popBackStack()
         }
 
         view.findViewById<Button>(R.id.tempo_bpm_confirm_button).setOnClickListener{
-            stateVm.setBpmValue(slider?.getSliderPos()?.toInt() ?: stateVm.bpmFlow.value)
+            stateVm.setBpmValue(slider?.getSliderPos()?.toInt() ?: stateVm.metronomeStateLD.value!!.bpm)
             findNavController().popBackStack()
         }
 

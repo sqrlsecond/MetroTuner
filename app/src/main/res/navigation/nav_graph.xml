@@ -17,10 +17,10 @@
     </fragment>
     <fragment
         android:id="@+id/metronomeSettingsFragment"
-        android:name="ru.makarovda.metrotuner.ui.MetronomeSettingsFragment"
+        android:name="ru.makarovda.metrotuner.ui.metronome.MetronomeSettingsFragment"
         android:label="MetronomeSettingsFragment" />
     <fragment
         android:id="@+id/temposFragment"
-        android:name="ru.makarovda.metrotuner.ui.TemposFragment"
+        android:name="ru.makarovda.metrotuner.ui.metronome.TemposFragment"
         android:label="TemposFragment" />
 </navigation>

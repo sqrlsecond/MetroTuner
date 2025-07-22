@@ -1,10 +1,9 @@
-package ru.makarovda.metrotuner.ui
+package ru.makarovda.metrotuner.ui.tuner
 
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import kotlin.math.round
 

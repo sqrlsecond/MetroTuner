@@ -1,6 +1,6 @@
-package ru.makarovda.metrotuner.ui
+package ru.makarovda.metrotuner.ui.tuner
 
-import FrequencyNoteConverter
+import ru.makarovda.metrotuner.domain.tuner.FrequencyNoteConverter
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -9,16 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Button
-import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import ru.makarovda.metrotuner.audioprocessing.AudioSignalProccesor
+import ru.makarovda.metrotuner.domain.tuner.AudioSignalProccesor
 import ru.makarovda.metrotuner.R
 
 class TunerFragment(): Fragment() {

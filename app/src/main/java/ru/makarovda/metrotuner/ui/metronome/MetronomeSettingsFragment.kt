@@ -1,41 +1,28 @@
-package ru.makarovda.metrotuner.ui
+package ru.makarovda.metrotuner.ui.metronome
 
-import android.content.Context
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import ru.makarovda.metrotuner.*
-import ru.makarovda.metrotuner.data.*
+import ru.makarovda.metrotuner.viewmodels.MetronomeStateViewModel
 
-class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListener, IBeatsObserver {
+class MetronomeSettingsFragment: Fragment(){
 
     private val stateVm: MetronomeStateViewModel by activityViewModels()
     /*private val profilesVm: MetronomeSettingsVM by viewModels {
         MetronomeSettingsVMFactory((requireActivity().application as MetroTunerApp).repository!!)
     }*/
 
-    private var beatsTextView: TextView? = null
-    private var dividerEdit: EditText?  = null
-    private var accentsAdapter: AccentsItemsAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,7 +39,7 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
         super.onViewCreated(view, savedInstanceState)
 
         // Вывод и изменение акцентов на долях
-        accentsAdapter = AccentsItemsAdapter(stateVm.accents, nonAccentColor = ResourcesCompat.getColor(resources, R.color.blue_800, null),
+        val accentsAdapter = AccentsItemsAdapter(stateVm.metronomeStateLD.value!!.beats, nonAccentColor = ResourcesCompat.getColor(resources, R.color.blue_800, null),
                                                 accentColor = ResourcesCompat.getColor(resources, R.color.red, null),
                                                 stateVm::changeAccent)
         view.findViewById<RecyclerView>(R.id.accents_list).apply {
@@ -60,13 +47,10 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
             layoutManager = GridLayoutManager(context, 4)
         }
 
-        beatsTextView = view.findViewById<TextView>(R.id.beats_count_text)
-
-        beatsTextView?.text = stateVm.beats.toString()
+        val beatsTextView = view.findViewById<TextView>(R.id.beats_count_text)
 
         //Подтверждение новых настроек
         view.findViewById<Button>(R.id.settings_confirm_btn).setOnClickListener {
-
             findNavController().popBackStack()
         }
 
@@ -106,43 +90,11 @@ class MetronomeSettingsFragment: Fragment(), EnterPresetNameDialog.ResultListene
         }
 
         //Реакция на изменение числа долей в такте
-        stateVm.addBeatsObserver(this)
-    }
-
-
-    override fun result(name: String) {
-        if (name == "null"){
-            return
+        stateVm.metronomeStateLD.observe(this){
+            beatsTextView.text = it.beats.size.toString()
+            accentsAdapter.submitNewList(it.beats)
+            //accentsAdapter.accentsPattern = it.beats
+            //accentsAdapter.notifyDataSetChanged()
         }
-
-    }
-
-    /*private fun clickListener(entity: MetronomeSettingsEntity, action: PresetsListAdapter.Actions){
-
-        when(action){
-            PresetsListAdapter.Actions.CHOOSE -> {
-                stateVm.bpm = entity.bpm
-                //stateVm.beats = entity.beats
-                //stateVm.accentStr = entity.accent
-
-                findNavController().popBackStack()
-            }
-            PresetsListAdapter.Actions.DELETE -> {
-                //profilesVm.deleteProfile(entity)
-            }
-        }
-    }*/
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        stateVm.removeBeatsObserver(this)
-        beatsTextView = null
-        dividerEdit = null
-    }
-
-    override fun notifyBeatsObserver(beats: List<Boolean>) {
-        beatsTextView?.text = stateVm.beats.toString()
-        accentsAdapter?.accentsPattern = beats
-        accentsAdapter?.notifyDataSetChanged()
     }
 }
