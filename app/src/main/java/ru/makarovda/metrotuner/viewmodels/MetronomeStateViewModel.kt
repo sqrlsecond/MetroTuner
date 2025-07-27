@@ -12,7 +12,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.makarovda.metrotuner.R
-import ru.makarovda.metrotuner.data.MetronomeBeats
+import ru.makarovda.metrotuner.domain.metronome.MetronomeBeats
 import ru.makarovda.metrotuner.ui.metronome.MetronomeState
 import ru.makarovda.metrotuner.utility.EventIntervalCalculator
 import java.util.*

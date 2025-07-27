@@ -1,4 +1,4 @@
-package ru.makarovda.metrotuner.data
+package ru.makarovda.metrotuner.domain.metronome
 
 import java.util.Stack
 

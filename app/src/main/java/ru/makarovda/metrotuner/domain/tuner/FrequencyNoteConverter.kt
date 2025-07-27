@@ -16,6 +16,7 @@ object FrequencyNoteConverter{
         }
 
     fun convert(frequency: Double): NoteMus {
+        // Если вышли за пределы диапазона измерений
         if ((frequency <= 54.0) || (frequency >= 3500)){
             return NoteMus(noteLiterals[0], 0)
         }
@@ -35,7 +36,6 @@ object FrequencyNoteConverter{
 
         val cents = (sign * (abs(semitonesCount % 12) - abs(round(semitonesCount % 12))) * 100).toInt()
 
-        //val noteName: String = noteLiterals[index] + octaveNumber.toString()
         val noteName: String = noteLiterals[index]
 
         return NoteMus(noteName, cents, frequency)

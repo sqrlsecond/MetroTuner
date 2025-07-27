@@ -28,4 +28,5 @@
     <string name="metronome_tempo_text">Tempo: &lt;u>%1$s&lt;/u></string>
     <string name="a4_dec_text">&lt;</string>
     <string name="a4_inc_text">">"</string>
+    <string name="a4_value_text">%1$d Hz</string>
 </resources>

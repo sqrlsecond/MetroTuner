@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_metrotuner_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MetroTuner">
-        <activity android:name="ru.makarovda.metrotuner.ui.MainActivity"
+        <activity android:name="ru.makarovda.metrotuner.MainActivity"
             android:exported="true"
             android:configChanges="orientation"
             android:screenOrientation="portrait"

@@ -1,12 +1,11 @@
-package ru.makarovda.metrotuner.ui
+package ru.makarovda.metrotuner
 
 import ru.makarovda.metrotuner.domain.tuner.FrequencyNoteConverter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import ru.makarovda.metrotuner.viewmodels.MetronomeStateViewModel
-import ru.makarovda.metrotuner.R
-import ru.makarovda.metrotuner.data.MetronomeBeats
+import ru.makarovda.metrotuner.domain.metronome.MetronomeBeats
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +25,6 @@ class MainActivity : AppCompatActivity() {
                 val beatsStr = getString(metronomeBeatsStr, "Xxxx")
                 metronomeStateViewModel.setSettings(bpm, beatsStr ?: "Xxxx")
                 FrequencyNoteConverter.laFreq = getInt(tunerA4FreqStr, 440)
-
             }
         }
         setContentView(R.layout.activity_main)

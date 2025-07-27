@@ -129,7 +129,7 @@ class VerticalSlider @JvmOverloads constructor(context: Context,
                 lineStrokeWidth = getDimension(R.styleable.VerticalSlider_strokeWidth, 40.0f)
                 textPainter.textSize = getDimension(R.styleable.VerticalSlider_textSize, 100.0f)
             }
-        additionalPadding = (lineStrokeWidth / 2).toInt()// половина от strokeWidth = 100.0f
+        additionalPadding = (lineStrokeWidth / 2).toInt()
         lineEnd = additionalPadding.toFloat()
     }
 
@@ -158,10 +158,7 @@ class VerticalSlider @JvmOverloads constructor(context: Context,
         converter.initialize(additionalPadding.toFloat(), (height - additionalPadding).toFloat(), maxValue, minValue)
         limiter.lowLimit = 0.0f + additionalPadding.toFloat()
         limiter.highLimit = (height - additionalPadding).toFloat()
-        //Log.d("Line", "$bottom")
-        //Log.d("Line", "${limiter.lowLimit} ${limiter.highLimit}")
-        //Log.d("Line", "$height")
-        lineOffsetX = 40.0f
+        lineOffsetX = lineStrokeWidth / 2
         painter.strokeWidth = lineStrokeWidth
         textOffset = lineStrokeWidth + lineOffsetX
 
@@ -171,59 +168,48 @@ class VerticalSlider @JvmOverloads constructor(context: Context,
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-
-            canvas!!.drawLine(
-                lineOffsetX,
-                additionalPadding.toFloat(),
-                lineOffsetX,
-                lineStart,
-                painter.apply {
-                    alpha = 128
-                }
+        canvas!!.drawLine(
+            lineOffsetX,
+            additionalPadding.toFloat(),
+            lineOffsetX,
+            lineStart,
+            painter.apply {
+                alpha = 128
+            }
+        )
+        canvas.drawLine(
+            lineOffsetX,
+            lineEnd,
+            lineOffsetX,
+            lineStart,
+            painter.apply {
+                alpha = 255
+            }
+        )
+        labels?.forEach {
+            canvas.drawText(
+                it.key,
+                textOffset,
+                converter.revConvert(it.value),
+                textPainter
             )
-            //Log.d("Line", "lineEnd = $lineEnd")
-            //Log.d("Line", "stopY = ${(height - additionalPadding)}")
-            canvas.drawLine(
-                lineOffsetX,
-                lineEnd,
-                lineOffsetX,
-                lineStart,
-                painter.apply {
-                    alpha = 255
-                }
-            )
-
-            //if(labelsNeedDraw) {
-                labels?.forEach {
-                    canvas.drawText(
-                        it.key,
-                        textOffset,
-                        converter.revConvert(it.value),
-                        textPainter
-                    )
-                }
-                //labelsNeedDraw = false
-            //}
-
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        //Log.d("CV", event.toString())
-
         when (event?.action){
-            MotionEvent.ACTION_DOWN -> {lineEnd = limiter.checkValue(event.y)
-                                        valueChangeHandler(converter.convert(lineEnd))
-                                        invalidate()
-                }
-
-
-            MotionEvent.ACTION_MOVE -> {lineEnd = limiter.checkValue(event.y)
-                                        valueChangeHandler(converter.convert(lineEnd))
-                                        invalidate()
-                }
+            MotionEvent.ACTION_DOWN -> {
+                lineEnd = limiter.checkValue(event.y)
+                valueChangeHandler(converter.convert(lineEnd))
+                invalidate()
+            }
+            MotionEvent.ACTION_MOVE -> {
+                lineEnd = limiter.checkValue(event.y)
+                valueChangeHandler(converter.convert(lineEnd))
+                invalidate()
+            }
         }
-
         return true
     }
 }
