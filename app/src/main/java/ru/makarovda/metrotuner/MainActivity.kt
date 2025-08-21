@@ -3,7 +3,10 @@ package ru.makarovda.metrotuner
 import ru.makarovda.metrotuner.domain.tuner.FrequencyNoteConverter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import ru.makarovda.metrotuner.viewmodels.MetronomeStateViewModel
 import ru.makarovda.metrotuner.domain.metronome.MetronomeBeats
 
@@ -18,6 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         if (savedInstanceState == null) { // Первое включение приложения
             getSharedPreferences(metronomeStateSettings, MODE_PRIVATE).apply {
@@ -28,6 +32,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
         setContentView(R.layout.activity_main)
+
+
     }
 
     override fun onStop() {

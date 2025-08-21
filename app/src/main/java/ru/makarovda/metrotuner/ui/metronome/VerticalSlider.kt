@@ -166,9 +166,9 @@ class VerticalSlider @JvmOverloads constructor(context: Context,
         lineEnd = converter.revConvert(sliderPos)
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas!!.drawLine(
+        canvas.drawLine(
             lineOffsetX,
             additionalPadding.toFloat(),
             lineOffsetX,
