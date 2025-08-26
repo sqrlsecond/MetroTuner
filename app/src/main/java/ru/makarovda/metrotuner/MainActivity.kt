@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.FragmentContainerView
 import ru.makarovda.metrotuner.viewmodels.MetronomeStateViewModel
 import ru.makarovda.metrotuner.domain.metronome.MetronomeBeats
 
@@ -32,7 +34,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         setContentView(R.layout.activity_main)
-
 
     }
 

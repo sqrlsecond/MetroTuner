@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -75,7 +77,7 @@ class MetronomeSettingsFragment: Fragment(){
             }.show(parentFragmentManager, "save Dialog")
         }*/
 
-        view.findViewById<Toolbar>(R.id.toolbar).setNavigationOnClickListener {
+        view.findViewById<Toolbar>(R.id.beats_toolbar).setNavigationOnClickListener {
             findNavController().popBackStack()
         }
 
@@ -90,11 +92,26 @@ class MetronomeSettingsFragment: Fragment(){
         }
 
         //Реакция на изменение числа долей в такте
-        stateVm.metronomeStateLD.observe(this){
+        stateVm.metronomeStateLD.observe(viewLifecycleOwner){
             beatsTextView.text = it.beats.size.toString()
-            accentsAdapter.submitNewList(it.beats)
-            //accentsAdapter.accentsPattern = it.beats
-            //accentsAdapter.notifyDataSetChanged()
+            //accentsAdapter.submitNewList(it.beats)
+            accentsAdapter.accentsPattern = it.beats
+            accentsAdapter.notifyDataSetChanged()
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.beats_toolbar)) { view, insets ->
+            val innerPadding = insets.getInsets(
+                WindowInsetsCompat.Type.statusBars() or
+                        WindowInsetsCompat.Type.displayCutout()
+            )
+            view.setPadding(
+                innerPadding.left,
+                innerPadding.top,
+                innerPadding.right,
+                innerPadding.bottom
+            )
+
+            insets
         }
     }
 }

@@ -18,8 +18,20 @@ class FragmentVP: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return inflater.inflate(R.layout.fragment_vp, container, false)
+    }
 
-        val view = inflater.inflate(R.layout.fragment_vp, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        val pager = view.findViewById<ViewPager2>(R.id.view_pager)
+        pager?.adapter = FragmentsVPAdapter(this)
+
+        TabLayoutMediator(view.findViewById(R.id.tab_layout), pager) { tab, position ->
+            tab.text = resources.getStringArray(R.array.tabs_names)[position]
+        }.attach()
+
         ViewCompat.setOnApplyWindowInsetsListener(view) { view, insets ->
             val innerPadding = insets.getInsets(
                 WindowInsetsCompat.Type.systemBars() or
@@ -34,20 +46,6 @@ class FragmentVP: Fragment() {
 
             insets
         }
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-        val pager = view.findViewById<ViewPager2>(R.id.view_pager)
-        pager?.adapter = FragmentsVPAdapter(this)
-
-        TabLayoutMediator(view.findViewById(R.id.tab_layout), pager) { tab, position ->
-            tab.text = resources.getStringArray(R.array.tabs_names)[position]
-        }.attach()
-
 
     }
 }

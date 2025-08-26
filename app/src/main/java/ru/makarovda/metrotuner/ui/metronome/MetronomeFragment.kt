@@ -9,6 +9,8 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -53,7 +55,7 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
 
         playPauseBtn = view.findViewById<ImageButton>(R.id.mtrn_play_pause_btn)
 
-        stateVm.metronomeStateLD.observe(this) {
+        stateVm.metronomeStateLD.observe(viewLifecycleOwner) {
             bpmTextView.text = it.bpm.toString()
             tempoTextView.text = Html.fromHtml(
                 getString(
@@ -81,7 +83,7 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
         }
 
         metronomeStateText = view.findViewById(R.id.metronome_state_text_view)
-        stateVm.currentBeat.observe(this) {
+        stateVm.currentBeat.observe(viewLifecycleOwner) {
             metronomeStateText!!.text = it.toString()
         }
 
@@ -112,6 +114,7 @@ class MetronomeFragment: Fragment(), SetBpmDialogResultListener {
         view.findViewById<TextView>(R.id.tempo_text_view).setOnClickListener {
             findNavController().navigate(R.id.temposFragment)
         }
+
     }
 
     override fun onPause() {

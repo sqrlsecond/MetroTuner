@@ -29,4 +29,6 @@
     <string name="a4_dec_text">&lt;</string>
     <string name="a4_inc_text">">"</string>
     <string name="a4_value_text">%1$d Hz</string>
+    <string name="set_tempo_fragment_name">Tempo</string>
+    <string name="beats_config_fragment_name">Beats</string>
 </resources>

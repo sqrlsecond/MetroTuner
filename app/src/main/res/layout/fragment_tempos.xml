@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tempo_bpm_text_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tempos_toolbar"
+        app:layout_constraintTop_toBottomOf="@id/tempo_toolbar"
         app:strokeWidth="32dp"
         app:textSize="16sp" />
 
@@ -45,15 +45,17 @@
         app:layout_constraintTop_toBottomOf="@+id/tempo_bpm_text_view" />
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tempos_toolbar"
+        android:id="@+id/tempo_toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
+        app:title="@string/set_tempo_fragment_name"
+        app:titleTextColor="@color/design_default_color_on_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
-        app:navigationContentDescription="to Metronome"/>
+        app:navigationContentDescription="to Metronome" />
 </androidx.constraintlayout.widget.ConstraintLayout>

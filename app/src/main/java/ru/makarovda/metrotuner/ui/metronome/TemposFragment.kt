@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -54,7 +56,7 @@ class TemposFragment: Fragment() {
         }
         slider?.setSliderPosition(stateVm.metronomeStateLD.value!!.bpm.toFloat())
 
-        view.findViewById<Toolbar>(R.id.tempos_toolbar).setNavigationOnClickListener {
+        view.findViewById<Toolbar>(R.id.tempo_toolbar).setNavigationOnClickListener {
             stateVm.setBpmValue(slider?.getSliderPos()?.toInt() ?: stateVm.metronomeStateLD.value!!.bpm)
             findNavController().popBackStack()
         }
@@ -63,6 +65,22 @@ class TemposFragment: Fragment() {
             stateVm.setBpmValue(slider?.getSliderPos()?.toInt() ?: stateVm.metronomeStateLD.value!!.bpm)
             findNavController().popBackStack()
         }
+
+        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.tempo_toolbar)) { view, insets ->
+            val innerPadding = insets.getInsets(
+                WindowInsetsCompat.Type.statusBars() or
+                        WindowInsetsCompat.Type.displayCutout()
+            )
+            view.setPadding(
+                innerPadding.left,
+                innerPadding.top,
+                innerPadding.right,
+                innerPadding.bottom
+            )
+
+            insets
+        }
+
 
     }
 }
